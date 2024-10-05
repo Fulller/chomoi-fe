@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 
-function Title({ children = "Chợ cũ" }) {
+function Title({ children = "Chợ mới" }) {
   return (
     <Helmet>
       <meta charSet="utf-8" />

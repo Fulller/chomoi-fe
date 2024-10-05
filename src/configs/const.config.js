@@ -11,4 +11,10 @@ const SERVER_URL = {
   OAUTH2_GOOGLE: `${env.serverUrl}/oauth2/authorization/google`,
 };
 
-export { ROUTE_TYPES, SERVER_URL };
+const ROLES = {
+  USER: "USER",
+  SHOP: "SHOP",
+  ADMIN: "ADMIN",
+};
+
+export { ROUTE_TYPES, SERVER_URL, ROLES };

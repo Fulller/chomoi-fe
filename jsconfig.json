@@ -1,0 +1,53 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "baseUrl": "./src",
+        "paths": {
+            "@app/*": [
+                "app/*"
+            ],
+            "@assets/*": [
+                "assets/*"
+            ],
+            "@components/*": [
+                "components/*"
+            ],
+            "@configs/*": [
+                "configs/*"
+            ],
+            "@constants/*": [
+                "constants/*"
+            ],
+            "@hooks/*": [
+                "hooks/*"
+            ],
+            "@images/*": [
+                "assets/images/*"
+            ],
+            "@layouts/*": [
+                "layouts/*"
+            ],
+            "@pages/*": [
+                "pages/*"
+            ],
+            "@redux/*": [
+                "redux/*"
+            ],
+            "@routes/*": [
+                "routes/*"
+            ],
+            "@services/*": [
+                "services/*"
+            ],
+            "@tools/*": [
+                "tools/*"
+            ],
+            "@db/*": [
+                "db/*"
+            ],
+            "@validations/*": [
+                "validations/*"
+            ],
+        }
+    }
+}

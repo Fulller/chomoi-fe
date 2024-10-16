@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import MainLayout from "@layouts/user/MainLayout";
 import AuthLayout from "@layouts/user/AuthLayout";
+import AccountLayout from "@layouts/user/AccountLayout";
 
 import NotFound from "@pages/user/NotFound";
 import Home from "@pages/user/Home";
@@ -12,6 +13,7 @@ import Logout from "@pages/user/auth/Logout";
 import Setting from "@pages/user/Setting";
 import Cart from "@pages/user/Cart";
 import Orders from "@pages/user/Orders";
+import Account from "@pages/user/Account";
 
 import { USER_ROUTE_TYPES } from "../routeTypes/routeTypes";
 
@@ -92,6 +94,20 @@ export default [
     Layout: MainLayout,
     type: USER_ROUTE_TYPES.PUBLIC,
     title: "Không tìm thấy trang",
+  },
+  {
+    path: "/account/:page",
+    Page: Account,
+    Layout: AccountLayout,
+    type: USER_ROUTE_TYPES.PRIVATE,
+    title: "Địa chỉ",
+  },
+  {
+    path: "/orders/:page",
+    Page: Orders,
+    Layout: AccountLayout,
+    type: USER_ROUTE_TYPES.PRIVATE,
+    title: "Đơn mua",
   },
   {
     path: "*",

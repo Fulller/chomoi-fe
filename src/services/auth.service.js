@@ -16,6 +16,11 @@ const AuthService = {
   getUserInfo() {
     return service(axios.get(getAuthUrl("/info")));
   },
+  changePassword({ currentPassword, newPassword }) {
+    return service(
+      axios.post(getAuthUrl("/change-password"), { currentPassword, newPassword })
+    );
+  },
   forgotPassword(email) {
     return service(axios.post(getAuthUrl("/forgot-password"), { email }));
   },

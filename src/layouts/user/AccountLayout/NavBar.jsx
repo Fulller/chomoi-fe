@@ -3,6 +3,7 @@ import { RiBillLine } from "react-icons/ri";
 import { Menu } from 'antd';
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import AccountService from "@services/account.service";
 const items = [
     {
         label: 'Thông tin tài khoản',
@@ -18,11 +19,6 @@ const items = [
                 label: 'Địa chỉ',
                 key: 'address',
                 path: "/account/address"
-            },
-            {
-                label: 'Đổi mật khẩu',
-                key: 'change-password',
-                path: "/account/change-password"
             },
         ],
     },
@@ -67,18 +63,57 @@ const items = [
 function NavBar() {
     const [current, setCurrent] = useState('profile'); // Đặt giá trị mặc định
     const { page } = useParams();
+    const [user, setUser] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        async function fetchUserData() {
+            try {
+                const [response, apiError] = await AccountService.getUserInfo();
+                if (apiError) {
+                    setError(apiError.message || "Failed to fetch user data.");
+                    return;
+                }
+                setUser(response.data);
+            } catch (err) {
+                setError(err.response?.data?.message || err.message || "Failed to fetch user data.");
+            }
+        }
+
+        fetchUserData();
+    }, []);
+
     useEffect(() => {
         setCurrent(page || 'profile'); // Nếu page không có, mặc định là 'profile'
     }, [page]);
+
+    const menuItems = items.map(item => {
+        if (item.key === 'account') {
+            if (user && user.isLocal) {
+                // Thêm "Change Password" nếu user không đăng nhập bằng Google
+                const updatedChildren = [
+                    ...item.children,
+                    {
+                        label: 'Đổi mật khẩu',
+                        key: 'change-password',
+                        path: "/account/change-password"
+                    }
+                ];
+                return { ...item, children: updatedChildren };
+            }
+        }
+        return item;
+    });
+
     return (
         <Menu
             selectedKeys={[current]}
             mode="inline"
             style={{ width: 250 }} // Điều chỉnh chiều rộng của menu
         >
-            {items.map(item => (
+            {menuItems.map(item => (
                 <Menu.SubMenu key={item.key} title={item.label} icon={item.icon}>
-                    {item?.children?.map(child => (
+                    {item.children.map(child => (
                         <Menu.Item key={child.key}>
                             <Link to={child.path}>
                                 {child.label}

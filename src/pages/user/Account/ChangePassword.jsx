@@ -1,81 +1,94 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { Form, Field, SubmitButton, ErrorMessage } from "@components/Form";
 import AuthService from "@services/auth.service";
+import HeaderForm from "@pages/user/auth/components/HeaderForm";
+import { toast } from "react-toastify";
+import useMessageByApiCode from "@hooks/useMessageByApiCode";
+import changepasswordSchema from "@validations/account/changepasswordSchema";
 
-function ChangePassword() {
+const ChangePassword = () => {
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
-    const [error, setError] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState();
+    const getMessage = useMessageByApiCode();
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-
-        if (!currentPassword || !newPassword) {
-            setError("Both fields are required.");
-            setSuccessMessage(null);
-            return;
-        }
-
-        setError(null);
-        setSuccessMessage(null);
+    const handleSubmit = async (data) => {
+        const { currentPassword, newPassword } = data;
 
         try {
             const [response, apiError] = await AuthService.changePassword({
                 currentPassword,
-                newPassword
+                newPassword,
             });
 
             if (apiError) {
-                setError(apiError.message || "An unexpected error occurred.");
-                setSuccessMessage(null);
-                return;
+                if (apiError.code === "auth-e-07") {
+                    toast.error("Mật khẩu hiện tại không đúng");
+                    return;
+                }
             }
 
-            setSuccessMessage("Password changed successfully.");
-            setError(null);
+            toast.success("Mật khẩu đã được thay đổi thành công!");
             setCurrentPassword("");
             setNewPassword("");
-
         } catch (err) {
-            setError(err.response?.data?.message || err.message || "An unexpected error occurred.");
-            setSuccessMessage(null);
+            const errorMsg = getMessage(err.response?.data?.code) || err.message || "Đã xảy ra lỗi ngoài ý muốn.";
+            setErrorMessage(errorMsg);
         }
-    }
+    };
 
     return (
-        <div>
-            <h2>Change Password page</h2>
-            
-            {error && <div style={{ color: "red" }}>{error}</div>}
+        <div className="flex items-center justify-center min-h-[80vh] bg-gray-50">
+            <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+                <HeaderForm>Đổi Mật Khẩu</HeaderForm>
 
-            {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
+                <ErrorMessage message={errorMessage}></ErrorMessage>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Current Password</label>
-                    <input
+                <Form schema={changepasswordSchema} onSubmit={handleSubmit}>
+                    <Field
+                        name="currentPassword"
+                        label="Mật khẩu hiện tại"
                         type="password"
+                        placeholder="Nhập mật khẩu hiện tại"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                     />
-                </div>
 
-                <div>
-                    <label>New Password</label>
-                    <input
+                    <Field
+                        name="newPassword"
+                        label="Mật khẩu mới"
                         type="password"
+                        placeholder="Nhập mật khẩu mới"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                     />
-                </div>
 
-                <button type="submit">Change Password</button>
-            </form>
+                    <SubmitButton>
+                        Đổi mật khẩu
+                    </SubmitButton>
+                </Form>
+
+                <div className="mt-4 text-center">
+                    <p className="text-sm text-gray-600">
+                        Quay lại{" "}
+                        <a href="/account/profile" className="text-indigo-500 hover:underline">
+                            trang hồ sơ
+                        </a>
+                    </p>
+                </div>
+            </div>
         </div>
     );
-}
+};
 
 export default ChangePassword;
+
+
+
+
+
+
+
 
 
 

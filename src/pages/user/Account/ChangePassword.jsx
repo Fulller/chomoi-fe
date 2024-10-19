@@ -15,25 +15,20 @@ const ChangePassword = () => {
     const handleSubmit = async (data) => {
         const { currentPassword, newPassword } = data;
 
-        try {
-            const [response, apiError] = await AuthService.changePassword({
-                currentPassword,
-                newPassword,
-            });
+        const [response, apiError] = await AuthService.changePassword({
+            currentPassword,
+            newPassword,
+        });
 
-            if (apiError) {
-                setErrorMessage(getMessage(apiError.code))
-                setTimeout(() => setErrorMessage(''), 1700);
-                return;
-            }
-
-            toast.success("Mật khẩu đã được thay đổi thành công!");
-            setCurrentPassword("");
-            setNewPassword("");
-        } catch (err) {
-            const errorMsg = getMessage(err.response?.data?.code) || err.message || "Đã xảy ra lỗi ngoài ý muốn.";
-            setErrorMessage(errorMsg);
+        if (apiError) {
+            setErrorMessage(getMessage(apiError.code))
+            setTimeout(() => setErrorMessage(''), 1700);
+            return;
         }
+
+        toast.success("Mật khẩu đã được thay đổi thành công!");
+        setCurrentPassword("");
+        setNewPassword("");
     };
 
     return (

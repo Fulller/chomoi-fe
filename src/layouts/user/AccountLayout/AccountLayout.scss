@@ -1,0 +1,28 @@
+#account-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    #account-address-navbar {
+      padding: 1rem;
+      gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      /* Đặt chiều rộng cho menu */
+      width: 200px; /* Điều chỉnh giá trị này theo nhu cầu */
+      .navbar-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        .icon {
+          font-size: 1.5rem;
+        }
+        .title {
+          font-size: 1rem;
+        }
+      }
+    }
+    #account-layout-page {
+      flex: 1;
+    }
+  }

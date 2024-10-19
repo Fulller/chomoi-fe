@@ -9,6 +9,7 @@ const apiCode = {
   "auth-e-02": "Email chưa đăng ký",
   "auth-e-03": "Sai mật khẩu",
   "auth-e-04": "Mã code không tìm thấy",
+  "auth-e-07": "Mật khẩu hiện tại không đúng",
 };
 
 export default apiCode;

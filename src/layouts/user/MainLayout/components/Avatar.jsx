@@ -3,19 +3,24 @@ import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import { useState, useRef } from "react";
 import {
-  FaUser,
-  FaShoppingCart,
-  FaShoppingBag,
   FaCog,
+  FaShoppingBag,
   FaSignOutAlt,
+  FaShoppingCart,
+  FaUser,
   FaStore,
 } from "react-icons/fa";
+import { RiAdminFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
+
+import { ROLES } from "@configs/const.config";
 
 export default function Avatar() {
   const user = useSelector((state) => state.auth.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tippyRef = useRef(null);
+  const isAdmin = user?.roles.includes(ROLES.ADMIN);
+  const isShop = user?.roles.includes(ROLES.SHOP);
 
   // Toggle menu state
   const toggleMenu = () => {
@@ -35,9 +40,11 @@ export default function Avatar() {
 
   const menuItems = [
     { label: "Giỏ hàng", Icon: FaShoppingCart, path: "/cart" },
-    { label: "Đơn hàng", Icon: FaShoppingBag, path: "/orders" },
-    { label: "Cài đặt", Icon: FaCog, path: "/setting" },
-    { label: "Người bán", Icon: FaStore, path: "/@shop" },
+    { label: "Đơn hàng", Icon: FaShoppingBag, path: "/orders/all" },
+    { label: "Tài khoản", Icon: FaCog, path: "/account/profile" },
+    isShop
+      ? { label: "Cửa hàng", Icon: FaStore, path: "/@shop" }
+      : { label: "Đăng ký cửa hàng", Icon: FaStore, path: "/upgrade-to-shop" },
     {
       label: "Đăng xuất",
       Icon: FaSignOutAlt,
@@ -75,7 +82,6 @@ export default function Avatar() {
               <div className="text-gray-500">{user?.email}</div>
             </div>
           </div>
-
           {menuItems.map((item) => {
             const { Icon } = item;
             return (
@@ -94,6 +100,18 @@ export default function Avatar() {
               </Link>
             );
           })}
+          {isAdmin && (
+            <Link
+              key={uuidv4()}
+              className="flex items-center text-left p-2 hover:bg-gray-100 w-full"
+              to="/@admin"
+            >
+              <span className="mr-2">
+                <RiAdminFill />
+              </span>
+              Admin
+            </Link>
+          )}
         </div>
       )}
     >

@@ -1,0 +1,40 @@
+.attribute-container {
+
+    .category-select {
+        margin-bottom: 20px;
+
+        .category-dropdown {
+            width: 300px;
+        }
+    }
+
+    .ant-form {
+        margin-bottom: 20px;
+        display      : flex;
+        gap          : 12px;
+
+        .ant-form-item {
+            flex: 1;
+        }
+    }
+
+    .attribute-table {
+        margin-top: 20px;
+
+        .ant-table {
+            background-color: white;
+            border-radius   : 8px;
+        }
+    }
+}
+
+.ant-modal {
+    .ant-modal-header {
+        background-color: #f0f0f0;
+    }
+
+    .ant-modal-footer {
+        display        : flex;
+        justify-content: flex-end;
+    }
+}

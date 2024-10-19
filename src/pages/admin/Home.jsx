@@ -1,3 +1,10 @@
+import { Fragment, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function Home() {
-  return <div>Admin home page</div>;
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate("/@admin/product/review");
+  }, []);
+  return <Fragment></Fragment>;
 }

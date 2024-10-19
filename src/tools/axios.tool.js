@@ -1,11 +1,12 @@
 import axios from "axios";
 import env from "@configs/env.config";
 import store from "@redux/store.redux";
+import { SERVER_URL } from "@configs/const.config";
 
 import _ from "lodash";
 
 const axiosInstance = axios.create({
-  baseURL: env.api_url,
+  baseURL: SERVER_URL.API,
 });
 axiosInstance.interceptors.request.use(
   (config) => {

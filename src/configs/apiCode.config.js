@@ -10,6 +10,23 @@ const apiCode = {
   "auth-e-03": "Sai mật khẩu",
   "auth-e-04": "Mã code không tìm thấy",
   "auth-e-07": "Mật khẩu hiện tại không đúng",
+  "category-s-01": "Thêm category thành công",
+  "category-s-02": "Lấy cây category thành công",
+  "category-s-03": "Cập nhật category thành công",
+  "category-s-04": "Xóa category thành công",
+  "category-s-05": "Lấy danh sách attribute thành công",
+  "category-s-06": "Thêm attrubute thành công",
+  "category-e-01": "Không tìm thấy category",
+  "category-e-02": "Không tìm thấy category",
+  "category-e-03": "Không tìm thấy category",
+  "attribute-s-01": "Thêm attribute thành công",
+  "attribute-s-02": "Xóa attribute thành công",
+  "attribute-s-03": "Cập nhât attribute thành công",
+  "attribute-s-04": "Thêm opption thành công",
+  "attribute-e-01": "Không tìm thấy attribute",
+  "attribute-option-s-01": "Cập nhật option thành công",
+  "attribute-option-s-02": "Xóa option thành công",
+  "attribute-option-1-01": "Không tìm thấy option",
 };
 
 export default apiCode;

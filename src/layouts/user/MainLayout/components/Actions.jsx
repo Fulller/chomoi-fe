@@ -1,6 +1,8 @@
 import ToolTip from "@components/TollTip";
 import { v4 as uuidv4 } from "uuid";
-import { FaShoppingCart, FaShoppingBag } from "react-icons/fa";
+import { LuShoppingCart } from "react-icons/lu";
+import { FiShoppingBag } from "react-icons/fi";
+
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -12,13 +14,13 @@ export default function Actions() {
   const menu = [
     {
       title: "Giỏ hàng",
-      icon: FaShoppingCart,
+      icon: LuShoppingCart,
       path: "/cart",
       count: cartCount,
     },
     {
       title: "Đơn hàng",
-      icon: FaShoppingBag,
+      icon: FiShoppingBag,
       path: "/orders",
       count: orderCount,
     },

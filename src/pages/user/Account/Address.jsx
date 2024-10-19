@@ -2,7 +2,6 @@ import AddressService from "@services/address.service";
 import { useEffect, useState } from "react";
 function Address() {
     const [addresses, setAddresses] = useState([]);
-    
     useEffect(() => {
         fetchAddress();
     }, [])

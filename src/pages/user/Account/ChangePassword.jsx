@@ -22,10 +22,9 @@ const ChangePassword = () => {
             });
 
             if (apiError) {
-                if (apiError.code === "auth-e-07") {
-                    toast.error("Mật khẩu hiện tại không đúng");
-                    return;
-                }
+                setErrorMessage(getMessage(apiError.code))
+                setTimeout(() => setErrorMessage(''), 1700);
+                return;
             }
 
             toast.success("Mật khẩu đã được thay đổi thành công!");

@@ -38,7 +38,7 @@ export default function Actions() {
                   to={item.path}
                   className="menuAction-item relative flex items-center rounded-md whitespace-nowrap space-x-2 rounded-full"
                 >
-                  <Icon size={36} />
+                  <Icon size={30} />
                   {item.count > 0 && (
                     <span className="badge absolute top-[-8px] right-[-8px] rounded-full bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center">
                       {item.count}

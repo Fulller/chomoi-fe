@@ -1,5 +1,5 @@
 $primary-color     : #1890ff;
-$button-hover-color: darken($primary-color, 10%);
+$button-hover-color: adjust-color($primary-color, $lightness: -10%);
 $border-color      : #d9d9d9;
 $table-background  : #fafafa;
 
@@ -40,7 +40,7 @@ $table-background  : #fafafa;
         }
 
         .ant-table-tbody>tr:hover {
-            background-color: lighten($primary-color, 45%);
+            background-color: adjust-color($primary-color, $lightness: 45%);
         }
     }
 }

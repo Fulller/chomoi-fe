@@ -19,8 +19,8 @@ export default function Avatar() {
   const user = useSelector((state) => state.auth.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tippyRef = useRef(null);
-  const isAdmin = user?.roles.includes(ROLES.ADMIN);
-  const isShop = user?.roles.includes(ROLES.SHOP);
+  const isAdmin = user?.roles?.includes(ROLES.ADMIN);
+  const isShop = user?.roles?.includes(ROLES.SHOP);
 
   // Toggle menu state
   const toggleMenu = () => {
@@ -63,7 +63,7 @@ export default function Avatar() {
       ref={tippyRef}
       render={(attrs) => (
         <div
-          className="bg-white shadow-lg hover:shadow-xl rounded-md p-2 flex flex-col tooltip-scroll"
+          className="bg-white shadow-lg hover:shadow-xl rounded-md p-2 flex flex-col tooltip-scroll "
           tabIndex={-1}
           {...attrs}
         >
@@ -115,7 +115,7 @@ export default function Avatar() {
         </div>
       )}
     >
-      <span onClick={toggleMenu} className="cursor-pointer">
+      <span onClick={toggleMenu} className="cursor-pointer avatar">
         {user?.avatar ? (
           <img
             src={user?.avatar}

@@ -9,7 +9,6 @@ function Router() {
       <Routes>
         {routes.map((route) => {
           const { path, type, element, title } = route;
-          console.log({ title });
           const RouteType = route.type;
           return (
             <Route

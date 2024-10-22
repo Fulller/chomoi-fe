@@ -31,7 +31,7 @@ const MainLayout = ({ children }) => {
       <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
         <div
           id="header"
-          className="mx-auto flex items-center justify-between py-4 px-8 space-x-4"
+          className="mx-auto flex items-center justify-between py-4 px-8 space-x-8"
         >
           <Link to="/" className="logo flex items-center space-x-4">
             <img src={logo} alt="Logo" className="h-10 w-10" />

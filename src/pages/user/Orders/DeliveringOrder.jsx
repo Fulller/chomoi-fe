@@ -1,4 +1,4 @@
 function DeliveringOrder() {
-    return (<div>Delivering Order Page</div>);
+    return ( <div>Delivering Order Page</div> );
 }
 export default DeliveringOrder;

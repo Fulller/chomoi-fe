@@ -1,0 +1,102 @@
+.admin-layout {
+    height: 100vh; // Sử dụng toàn bộ chiều cao của cửa sổ
+
+    .admin-sider {
+        border-right  : 0.1rem solid rgba(0, 0, 0, 0.1);
+        display       : flex;
+        flex-direction: column;
+
+        .admin-sider-menu {
+            border: none;
+        }
+
+        .logo {
+            display         : flex;
+            align-items     : center;
+            justify-content : center;
+            padding         : 16px;
+            background-color: #fff;
+
+            img {
+                width : 32px;
+                height: 32px;
+            }
+
+            h1 {
+                color      : black;
+                margin-left: 10px;
+                font-size  : 18px;
+            }
+        }
+
+        .ant-layout-sider-trigger {
+            background-color: rgb(44, 44, 44);
+            color           : white;
+
+            &:hover {
+                background-color: rgb(0, 0, 0);
+            }
+        }
+
+        .user-info {
+            align-items     : center;
+            display         : flex;
+            flex-direction  : column;
+            align-items     : center;
+            background-color: black;
+
+            .avatar {
+                width        : 40px;
+                height       : 40px;
+                border-radius: 50%;
+            }
+
+            .email {
+                margin-right: 10px;
+                color       : black;
+                font-size   : 16px;
+            }
+        }
+    }
+
+    // Thiết lập cho Content
+    .admin-content {
+        background-color: white;
+        padding         : 24px;
+        overflow-y      : auto; // Thêm thuộc tính này để scroll khi nội dung quá cao
+        height          : 100%; // Sử dụng toàn bộ chiều cao có thể của layout
+
+        .admin-layout-page {
+            padding         : 20px;
+            background-color: #f5f5f5;
+            border-radius   : 8px;
+            box-shadow      : 0 2px 8px rgba(0, 0, 0, 0.1);
+
+            h2 {
+                color        : #333;
+                font-weight  : bold;
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+    // Điều chỉnh lại theme của antd cho phù hợp
+    .ant-layout-sider {
+        background-color: #fff !important; // Override background của sider
+    }
+
+    .ant-menu-light {
+        background-color: #fff;
+        border-right    : none;
+
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+            color: black;
+        }
+
+        .ant-menu-item-selected {
+            background-color: #e6f7ff;
+            color           : #1890ff;
+        }
+    }
+}

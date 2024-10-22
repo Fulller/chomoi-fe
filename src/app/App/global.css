@@ -28,4 +28,5 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Màu của thanh cuộn khi hover */
+  background: #000000; /* Màu của thanh cuộn khi hover */
 }

@@ -1,4 +1,4 @@
 function PendingOrder() {
-    return (<div>Pending Order Page</div>);
+    return ( <div>Pending Order Page</div> );
 }
 export default PendingOrder;

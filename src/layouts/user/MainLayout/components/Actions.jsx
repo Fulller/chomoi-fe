@@ -1,6 +1,8 @@
 import ToolTip from "@components/TollTip";
 import { v4 as uuidv4 } from "uuid";
-import { FaShoppingCart, FaShoppingBag } from "react-icons/fa";
+import { LuShoppingCart } from "react-icons/lu";
+import { FiShoppingBag } from "react-icons/fi";
+
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -12,13 +14,13 @@ export default function Actions() {
   const menu = [
     {
       title: "Giỏ hàng",
-      icon: FaShoppingCart,
+      icon: LuShoppingCart,
       path: "/cart",
       count: cartCount,
     },
     {
       title: "Đơn hàng",
-      icon: FaShoppingBag,
+      icon: FiShoppingBag,
       path: "/orders",
       count: orderCount,
     },
@@ -36,7 +38,7 @@ export default function Actions() {
                   to={item.path}
                   className="menuAction-item relative flex items-center rounded-md whitespace-nowrap space-x-2 rounded-full"
                 >
-                  <Icon size={36} />
+                  <Icon size={30} />
                   {item.count > 0 && (
                     <span className="badge absolute top-[-8px] right-[-8px] rounded-full bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center">
                       {item.count}

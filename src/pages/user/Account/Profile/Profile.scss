@@ -1,0 +1,78 @@
+$user-card-bg: #f9f9f9;
+$user-card-border: #ddd;
+$user-card-text-color: #555;
+$user-card-hover-color: rgba(0, 0, 0, 0.1);
+
+.acc-card {
+    background-color: $user-card-bg;
+    border: 1px solid $user-card-border;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px $user-card-hover-color;
+    transition: transform 0.2s;
+    box-sizing: border-box;
+    //height: 70vh;
+
+    .acc-info {
+        display: flex;
+        flex-direction: column; // Duy trì hướng cột cho mỗi hàng
+        margin: 0 auto; // Căn giữa khối
+        width: 80%; // Đặt chiều rộng khối
+
+        p {
+            display: flex; // Sử dụng flex để tạo hàng
+            justify-content: space-between; // Căn giữa giữa label và value
+            margin: 10px 0; // Khoảng cách giữa các hàng
+
+            .label {
+                font-weight: bold;
+                color: #333;
+                width: 20%; // Đặt chiều rộng cho label
+            }
+
+            .value {
+                color: $user-card-text-color; // Màu cho giá trị
+                width: 30%; // Đặt chiều rộng cho giá trị
+                text-align: left; // Căn lề trái cho giá trị
+            }
+        }
+    }
+
+}
+
+.acc-avt {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 1000%;
+    margin: 10px auto 20px auto; // Căn giữa ảnh
+    display: block; // Đảm bảo ảnh là block để có thể căn giữa
+}
+
+.label {
+    color: #333; // Hoặc màu mà bạn muốn
+    margin-right: 8px; // Khoảng cách giữa label và giá trị
+    font-weight: 900;
+}
+
+.upload-avt {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-save {
+
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    border: 1px solid;
+    border-radius: 6px;
+    background-color: #3B82F6;
+    color: #fff;
+}
+
+.header {
+    font-weight: 700;
+}

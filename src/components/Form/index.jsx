@@ -27,10 +27,8 @@ const Form = ({ children, schema, onSubmit }) => {
       ...errors,
       [name]: "",
     });
-    setData({
-      ...data,
-      [name]: value,
-    });
+    data[name] = value
+    setData(data);
   };
 
   const handleSubmit = async (e) => {

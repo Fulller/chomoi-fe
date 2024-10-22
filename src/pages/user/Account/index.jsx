@@ -4,13 +4,13 @@ import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
 
 const page = {
-    profile: Profile,
-    address: Address,
-    "change-password": ChangePassword
-}
+  profile: Profile,
+  address: Address,
+  "change-password": ChangePassword,
+};
 function Account() {
-    const params = useParams();
-    const Page = page[params.page] || Profile;
-    return <Page></Page>;
+  const params = useParams();
+  const Page = page[params.page] || Profile;
+  return <Page></Page>;
 }
 export default Account;

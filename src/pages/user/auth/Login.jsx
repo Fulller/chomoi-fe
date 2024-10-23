@@ -19,6 +19,7 @@ const LogIn = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (data) => {
+    console.log(data);
     const [result, error] = await AuthService.login(data);
     console.log({ result, error });
     if (error) {

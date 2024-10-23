@@ -1,10 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FormContext } from "./index";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
-const Field = ({ name, label, type = "text", placeholder }) => {
+const Field = ({ name, label, type = "text", placeholder, defaultValue}) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const { data, errors, handleChange } = useContext(FormContext);
+
+  useEffect(() => {
+    handleChange(name, defaultValue);
+  }, [defaultValue])
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
@@ -20,17 +24,20 @@ const Field = ({ name, label, type = "text", placeholder }) => {
           type={type === "password" && isPasswordVisible ? "text" : type}
           id={name}
           name={name}
-          value={data[name] || ""}
+          defaultValue={defaultValue}
           placeholder={placeholder}
-          className={`w-full px-3 py-2 border ${
-            errors[name] ? "border-red-500" : "border-gray-300"
-          } rounded-md focus:outline-none focus:ring-2 ${
-            errors[name] ? "focus:ring-red-500" : "focus:ring-indigo-500"
-          }`}
+          className={`w-full px-3 py-2 border ${errors[name] ? "border-red-500" : "border-gray-300"
+            } rounded-md focus:outline-none focus:ring-2 ${errors[name] ? "focus:ring-red-500" : "focus:ring-indigo-500"
+            }`}
           onChange={(e) => {
-            handleChange(name, e.target.value);
+            if (type === "checkbox") {
+              handleChange(name, e.target.checked);
+            } else {
+              handleChange(name, e.target.value);
+            }
           }}
           autoComplete={name}
+          {...type === "checkbox" && defaultValue && { checked: true }}
         />
         {type === "password" && (
           <button

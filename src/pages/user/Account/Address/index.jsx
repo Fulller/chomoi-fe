@@ -5,14 +5,15 @@ import { toast } from "react-toastify";
 import AddressService from "@services/address.service";
 import AddressForm from "./AddressForm";
 import addressesJson from "@assets/jsons/address.json";
-import useMessageByApiCode from "@hooks/useMessageByApiCode";
+import useMessageByApiCode from "@hooks/useMessageByApiCodeV2";
+import apiCode from "./api.Code";
 
 const Address = () => {
     const [addresses, setAddresses] = useState([]);
     const [showFormCreate, setShowFormCreate] = useState(false);
     const [showFormUpdate, setShowFormUpdate] = useState(false);
     const [idFormUpdate, setIdFormUpdate] = useState();
-    const getMessage = useMessageByApiCode();
+    const getMessage = useMessageByApiCode({apiCode});
     const { confirm } = Modal;
 
     useEffect(() => {
@@ -27,7 +28,6 @@ const Address = () => {
     async function deleteAddress(id) {
         const [result, error] = await AddressService.delete(id);
         if (error) {
-            setErrorMessage(getMessage(error.code));
             toast.error(getMessage(error.code), {
                 autoClose: 3000,
             });
@@ -42,7 +42,6 @@ const Address = () => {
     const updateIsDefault = async (id) => {
         const [result, error] = await AddressService.updateIsDefault(id);
         if (error) {
-            setErrorMessage(getMessage(error.code));
             toast.error(getMessage(error.code), {
                 autoClose: 3000,
             });
@@ -155,6 +154,7 @@ const Address = () => {
                                                 <div className="flex items-center">
                                                     {detail}
                                                 </div>
+                                                {/* {console.log(addressesJson[province].district[district].ward[ward].name_with_type)} */}
                                                 <div className="flex items-center">
                                                     {`  ${addressesJson[province].district[district].ward[ward].name_with_type}, 
                                                         ${addressesJson[province].district[district].name_with_type},

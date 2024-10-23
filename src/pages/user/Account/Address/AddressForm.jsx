@@ -2,18 +2,19 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { ErrorMessage, Field, Form, SubmitButton } from "@components/Form";
-import useMessageByApiCode from "@hooks/useMessageByApiCode";
+import useMessageByApiCode from "@hooks/useMessageByApiCodeV2";
 import SelectAddress from "./SelectAddress";
 import AddressService from "@services/address.service";
 import AddressSchema from "@validations/user/AddressSchema"
+import apiCode from "./api.Code";
 
 const AddressForm = ({ show, id = null, onClose, onSubmitCreate, onSubmiUpdate }) => {
     if (!show) return null; // Không hiển thị Form nếu trạng thái show là false
 
     const [errorMessage, setErrorMessage] = useState();
-    const getMessage = useMessageByApiCode();
+    const getMessage = useMessageByApiCode({ apiCode });
     const [address, setAddress] = useState({});
-    const { detail, receiverName, isDefault, receiverPhone } = address;
+    const { detail, receiverName, isDefault = false, receiverPhone } = address;
 
     useEffect(() => {
         if (id) {
@@ -37,6 +38,7 @@ const AddressForm = ({ show, id = null, onClose, onSubmitCreate, onSubmiUpdate }
         if (!data.hasOwnProperty("isDefault")) {
             data.isDefault = false;
         }
+        console.log(data)
         const [result, error] = await AddressService.create(data);
         if (error) {
             setErrorMessage(getMessage(error.code));
@@ -52,7 +54,7 @@ const AddressForm = ({ show, id = null, onClose, onSubmitCreate, onSubmiUpdate }
     }
 
     const handleSubmitUpdate = async (data) => {
-        
+
         if (!data.hasOwnProperty("id")) {
             data.id = id;
         }
@@ -74,7 +76,7 @@ const AddressForm = ({ show, id = null, onClose, onSubmitCreate, onSubmiUpdate }
     return (
         <div className="fixed top-10 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-md h-5/6 w-auto max-w-full">
-                <h2 className="text-2xl font-bold text-gray-700 mt-6 w-full text-left">
+                <h2 className="text-2xl font-bold text-gray-700 w-full text-left">
                     Địa chỉ mới
                 </h2>
                 <Form schema={AddressSchema} onSubmit={id ? handleSubmitUpdate : handleSubmitCreate}>
@@ -99,7 +101,7 @@ const AddressForm = ({ show, id = null, onClose, onSubmitCreate, onSubmiUpdate }
                     <div>
                         <SelectAddress address={address} />
                     </div>
-                    <div>
+                    <div className="h-16">
                         <Field
                             name="detail"
                             placeholder="Địa chỉ cụ thể"
@@ -121,9 +123,9 @@ const AddressForm = ({ show, id = null, onClose, onSubmitCreate, onSubmiUpdate }
                         </label>
                     </div>
                     <ErrorMessage message={errorMessage}></ErrorMessage>
-                    <div className="flex justify-end items-end bottom-0 inset-x-0 h-10">
+                    <div className="flex justify-end items-end h-10">
                         <div className="flex justify-center items-center w-32 h-10 hover:bg-slate-100 rounded">
-                            <button className="mr-2" type="button" onClick={onClose}>Trở lại</button>
+                            <button className="w-full h-full" type="button" onClick={onClose}>Trở lại</button>
                         </div>
                         <div className="w-40">
                             <SubmitButton loadingText="Đang xử lý...">

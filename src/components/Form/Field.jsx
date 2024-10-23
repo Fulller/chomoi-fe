@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FormContext } from "./index";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
-const Field = ({ name, label, type = "text", placeholder, defaultValue }) => {
+const Field = ({ name, label, type = "text", placeholder, defaultValue}) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const { data, errors, handleChange } = useContext(FormContext);
 

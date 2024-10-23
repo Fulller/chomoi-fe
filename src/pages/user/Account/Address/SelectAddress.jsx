@@ -30,6 +30,8 @@ const SelectAddress = ({ address }) => {
             setSelectedDistrict(""); // Reset district khi thay đổi province
             setSelectedWard("");     // Reset ward khi thay đổi province
             handleChange("province", provinceCode);
+            handleChange("district", "");
+            handleChange("ward", "");
         }
     };
 
@@ -38,10 +40,10 @@ const SelectAddress = ({ address }) => {
 
         // Kiểm tra nếu districtCode tồn tại trong addresses[selectedProvince]
         if (selectedProvince && addresses[selectedProvince].district[districtCode]) {
-            //const districtName = addresses[selectedProvince].district[districtCode].name_with_type;
             setSelectedDistrict(districtCode);
             setSelectedWard("");     // Reset ward khi thay đổi district
             handleChange("district", districtCode);
+            handleChange("ward", "");
         }
     };
 
@@ -50,7 +52,6 @@ const SelectAddress = ({ address }) => {
 
         // Kiểm tra nếu wardCode tồn tại trong addresses[selectedProvince].district[selectedDistrict]
         if (selectedProvince && selectedDistrict && addresses[selectedProvince].district[selectedDistrict].ward[wardCode]) {
-            //const wardName = addresses[selectedProvince].district[selectedDistrict].ward[wardCode].name_with_type;
             setSelectedWard(wardCode);
             handleChange("ward", wardCode);
         }
@@ -60,7 +61,7 @@ const SelectAddress = ({ address }) => {
 
     return (
         <div>
-            <div className="mb-1">
+            <div className="h-16">
                 <select
                     name="province"
                     value={selectedProvince}
@@ -80,7 +81,7 @@ const SelectAddress = ({ address }) => {
                     <p className="text-red-500 text-sm mt-1">{errors["province"]}</p>
                 )}
             </div>
-            <div className="mb-1">
+            <div className="h-16">
                 <select
                     name="district"
                     value={selectedDistrict}
@@ -104,7 +105,7 @@ const SelectAddress = ({ address }) => {
                     <p className="text-red-500 text-sm mt-1">{errors["district"]}</p>
                 )}
             </div>
-            <div className="mb-1">
+            <div className="h-16">
                 <select
                     id="ward"
                     value={selectedWard}

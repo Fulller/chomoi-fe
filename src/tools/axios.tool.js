@@ -1,5 +1,4 @@
 import axios from "axios";
-import env from "@configs/env.config";
 import store from "@redux/store.redux";
 import { SERVER_URL } from "@configs/const.config";
 
@@ -11,7 +10,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const { accessToken } = store.getState().auth.tokens;
-    if (accessToken) {
+    const isLoging = store.getState().auth.isLoging || false;
+    if (isLoging && accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;

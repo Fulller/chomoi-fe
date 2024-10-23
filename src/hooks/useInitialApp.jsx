@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "@services/auth.service";
-import { setAccessToken, setUser, setIsLogin } from "@redux/slices/auth.slice";
+import {
+  setAccessToken,
+  setTokens,
+  setUser,
+  setIsLogin,
+} from "@redux/slices/auth.slice";
 import env from "@configs/env.config";
 
 const useInitialApp = () => {
@@ -15,6 +20,7 @@ const useInitialApp = () => {
     const [result, error] = await AuthService.refreshToken();
     if (error) {
       dispatch(setIsLogin(false));
+      dispatch(setTokens({ accessToken: "", refreshToken: "" }));
       return;
     }
     const { accessToken } = result.data;
@@ -25,17 +31,19 @@ const useInitialApp = () => {
   const fetchUser = async () => {
     const [result, error] = await AuthService.getUserInfo();
     if (error) {
+      dispatch(setUser(null));
       return;
     }
     dispatch(setUser(result.data));
   };
 
+  const fetchData = async () => {
+    await refreshToken();
+    if (!isLoging) return;
+    await fetchUser();
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      await refreshToken();
-      if (!isLoging) return;
-      await fetchUser();
-    };
     fetchData();
     if (!isLoging) return;
     const intervalId = setInterval(refreshToken, env.interval_refresh_token);

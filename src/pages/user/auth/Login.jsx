@@ -21,6 +21,7 @@ const LogIn = () => {
   const handleSubmit = async (data) => {
     console.log(data);
     const [result, error] = await AuthService.login(data);
+    console.log({ result, error });
     if (error) {
       setErrorMessage(getMessage(error.code));
       toast.error(getMessage(error.code), {

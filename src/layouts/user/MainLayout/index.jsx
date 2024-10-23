@@ -39,7 +39,7 @@ const MainLayout = ({ children }) => {
           </Link>
           <SearchBox className="searchBox" />
           <Actions />
-          <div className="avatar flex items" content="Avatar">
+          <div className="flex items" content="Avatar">
             {isLoging ? <Avatar /> : <AuthActions />}
           </div>
         </div>

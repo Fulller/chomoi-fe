@@ -1,0 +1,23 @@
+.simple-sku {
+    margin-top    : 24px;
+    display       : flex;
+    flex-direction: column;
+    gap           : 12px;
+
+    .sku-field {
+
+        .sku-field-input {
+            display    : flex;
+            gap        : 12px;
+            align-items: center;
+
+
+            label {
+                display        : flex;
+                justify-content: end;
+                width          : 60%;
+                align-items    : center;
+            }
+        }
+    }
+}

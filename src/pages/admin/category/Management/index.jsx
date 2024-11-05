@@ -97,20 +97,20 @@ export default function CategoryManager() {
       key: "name",
     },
     {
-      title: "Actions",
+      title: "",
       key: "actions",
       align: "right",
       render: (_, record) => (
         <>
           <Button type="link" onClick={() => showUpdateModal(record)}>
-            Update
+            Cập nhật
           </Button>
           <Button
             type="link"
             danger
             onClick={() => handleDeleteCategory(record.id)}
           >
-            Delete
+            Xóa
           </Button>
         </>
       ),
@@ -144,11 +144,11 @@ export default function CategoryManager() {
             name="name"
             rules={[{ required: true, message: "Please enter category name" }]}
           >
-            <Input placeholder="Category Name" />
+            <Input placeholder="Category Name" style={{ width: "360px" }} />
           </Form.Item>
           <Form.Item name="parentId">
             <TreeSelect
-              style={{ width: "200px" }}
+              style={{ width: "360px" }}
               dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
               placeholder="Select Parent Category"
               treeData={renderTreeNodes(categoryTree)}
@@ -158,7 +158,7 @@ export default function CategoryManager() {
           </Form.Item>
           <Form.Item>
             <Button className="add-button" type="primary" htmlType="submit">
-              Add Category
+              Thêm danh mục
             </Button>
           </Form.Item>
         </Form>

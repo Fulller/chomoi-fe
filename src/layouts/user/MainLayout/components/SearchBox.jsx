@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import TollTip from "@components/TollTip";
 
+
 export default function SearchBox({ className }) {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);

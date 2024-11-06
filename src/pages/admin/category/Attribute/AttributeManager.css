@@ -1,0 +1,29 @@
+.attribute-container .category-select {
+  margin-bottom: 20px;
+}
+.attribute-container .category-select .category-dropdown {
+  width: 300px;
+}
+.attribute-container .ant-form {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+}
+.attribute-container .ant-form .ant-form-item {
+  flex: 1;
+}
+.attribute-container .attribute-table {
+  margin-top: 20px;
+}
+.attribute-container .attribute-table .ant-table {
+  background-color: white;
+  border-radius: 8px;
+}
+
+.ant-modal .ant-modal-header {
+  background-color: #f0f0f0;
+}
+.ant-modal .ant-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}/*# sourceMappingURL=AttributeManager.css.map */

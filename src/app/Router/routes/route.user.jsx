@@ -16,6 +16,7 @@ import Orders from "@pages/user/Orders";
 import Account from "@pages/user/Account";
 
 import { USER_ROUTE_TYPES } from "../routeTypes/routeTypes";
+import UpgradeToShop from "@pages/shop/UpgradeToShop";
 
 export default [
   {
@@ -115,5 +116,12 @@ export default [
     Layout: MainLayout,
     type: USER_ROUTE_TYPES.PUBLIC,
     title: "Không tìm thấy trang",
+  },
+  {
+    path: "/upgrade-to-shop",
+    Page: UpgradeToShop,
+    Layout: MainLayout,
+    type: USER_ROUTE_TYPES.PRIVATE,
+    title: "Đăng ký cửa hàng",
   },
 ];

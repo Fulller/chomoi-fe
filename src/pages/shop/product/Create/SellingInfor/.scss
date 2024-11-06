@@ -1,0 +1,25 @@
+#selling-info {
+    .is-simple {
+        display        : flex;
+        justify-content: end;
+
+        .title {
+            margin-right: 12px;
+            font-weight : 600;
+        }
+    }
+
+    .add-variation {
+        padding         : 8px;
+        display         : flex;
+        align-items     : center;
+        justify-content : center;
+        background-color: rgb(182, 182, 255);
+        gap             : 8px;
+        border-radius   : 8px;
+
+        &:hover {
+            background-color: rgb(132, 132, 253);
+        }
+    }
+}

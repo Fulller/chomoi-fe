@@ -7,6 +7,10 @@ import { LeftOutlined, RightOutlined, AntDesignOutlined  } from '@ant-design/ico
 import ProductService from '@services/product.service';
 import CartService from '@services/cart.service';
 import './Product.scss';
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
+
 
 const ProductDetails = () => {
   const [visible, setVisible] = useState(false);
@@ -20,7 +24,9 @@ const ProductDetails = () => {
   const { id } = useParams();
   const [errorMessage, setErrorMessage] = useState();
   const getMessage = useMessageByApiCode();
-  
+  const isLoging = useSelector((state) => state.auth.isLoging);
+  const navigate = useNavigate(); 
+
   const handleChange = (value) => {
     setQuantity(value);
   };
@@ -72,29 +78,34 @@ const ProductDetails = () => {
   };
 
   const handleAddToCart = async (skuId, quantity) =>{
-    console.log("skuId: " + skuId + " quantity: " + quantity);
-    if(skuId == null)
+    if(isLoging)
     {
-        toast.error("", {
-            autoClose: 3000,
-        });
-        return;
+      if(skuId == null)
+      {
+          toast.error("", {
+              autoClose: 3000,
+          });
+          return;
+      }
+      else{
+        const [result, error] = await CartService.addToCart({skuId, quantity});
+        if (error) {
+          console.log(error);
+          setErrorMessage(getMessage(error.code));
+          toast.error(getMessage(error.code), {
+              autoClose: 3000,
+          });
+          return;
+      } else {
+          toast.success("Thêm vào giỏ hàng thành công!", {
+              autoClose: 3000,
+          });
+          setLoading(false);
+      }
+      }
     }
     else{
-      const [result, error] = await CartService.addToCart({skuId, quantity});
-      if (error) {
-        console.log(error);
-        setErrorMessage(getMessage(error.code));
-        toast.error(getMessage(error.code), {
-            autoClose: 3000,
-        });
-        return;
-    } else {
-        toast.success("Thêm vào giỏ hàng thành công!", {
-            autoClose: 3000,
-        });
-        setLoading(false);
-    }
+      navigate('/login');
     }
   }
 

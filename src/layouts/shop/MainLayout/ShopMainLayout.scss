@@ -1,0 +1,102 @@
+.shop-layout {
+    height: 100vh;
+
+    .shop-sider {
+        height        : 100vh; // Ensure the sidebar takes up the full viewport height
+        overflow-y    : auto; // Enable vertical scrolling within the sidebar
+        border-right  : 0.1rem solid rgba(0, 0, 0, 0.1);
+        display       : flex;
+        flex-direction: column;
+
+        .shop-sider-menu {
+            border: none;
+        }
+
+        .logo {
+            display         : flex;
+            align-items     : center;
+            justify-content : center;
+            padding         : 16px;
+            background-color: #fff;
+
+            img {
+                width : 32px;
+                height: 32px;
+            }
+
+            h1 {
+                color      : black;
+                margin-left: 10px;
+                font-size  : 18px;
+            }
+        }
+
+        .ant-layout-sider-trigger {
+            background-color: rgb(44, 44, 44);
+            color           : white;
+
+            &:hover {
+                background-color: rgb(0, 0, 0);
+            }
+        }
+
+        .user-info {
+            align-items     : center;
+            display         : flex;
+            flex-direction  : column;
+            align-items     : center;
+            background-color: black;
+
+            .avatar {
+                width        : 40px;
+                height       : 40px;
+                border-radius: 50%;
+            }
+
+            .email {
+                margin-right: 10px;
+                color       : black;
+                font-size   : 16px;
+            }
+        }
+    }
+
+    .shop-content {
+        background-color: white;
+        padding         : 24px;
+        overflow-y      : auto;
+        height          : 100%;
+
+        .shop-layout-page {
+            padding         : 20px;
+            background-color: #f5f5f5;
+            border-radius   : 8px;
+            box-shadow      : 0 2px 8px rgba(0, 0, 0, 0.1);
+
+            h2 {
+                color        : #333;
+                font-weight  : bold;
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+    .ant-layout-sider {
+        background-color: #fff !important;
+    }
+
+    .ant-menu-light {
+        background-color: #fff;
+        border-right    : none;
+
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+            color: black;
+        }
+
+        .ant-menu-item-selected {
+            background-color: #e6f7ff;
+            color           : #1890ff;
+        }
+    }
+}

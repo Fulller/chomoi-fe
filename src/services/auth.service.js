@@ -18,7 +18,10 @@ const AuthService = {
   },
   changePassword({ currentPassword, newPassword }) {
     return service(
-      axios.post(getAuthUrl("/change-password"), { currentPassword, newPassword })
+      axios.post(getAuthUrl("/change-password"), {
+        currentPassword,
+        newPassword,
+      })
     );
   },
   forgotPassword(email) {

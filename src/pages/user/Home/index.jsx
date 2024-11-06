@@ -11,9 +11,6 @@ export default function Home() {
   const page = query.get("page") || 1;
   const size = query.get("size") || 8;
   const [products, setProduct] = useState([]);
-  
-  
-
 
   console.log({location})
 
@@ -29,7 +26,7 @@ export default function Home() {
   }, [location.search]);
 
   async function fetchProducts(){
-    const [result, error] = await HomeService.getProducts({ page: page-1, size});
+    const [result, error] = await HomeService.getHomeProducts({ page: page-1, size});
     if (error) {
       console.log({ error });
       return;

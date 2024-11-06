@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Dropdown, Button, InputNumber, Avatar, Table } from "antd";
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import CartService from "@services/cart.service";
+import ProductService from "@services/product.service";
 import './Cart.scss';
 import { toast } from "react-toastify";
 import TollTip from "@components/TollTip";
+import {Link} from "react-router-dom";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -24,8 +26,8 @@ const Cart = () => {
     const mappedItems = result.data.cartItems.map((item) => {
       const selectedVariationValues = item.sku.variation.split(" ").map((id) => {
         const foundOption = item.product.variations.flatMap(v => 
-          v.options.map(option => ({ name: v.name, value: option.value, id: option.id }))
-        ).find(option => option.id === id);
+          v.options.map(option => ({ name: v.name, value: option.value, id: option.id })))
+          .find(option => option.id === id);
         return foundOption ? `${foundOption.name}: ${foundOption.value}` : "";
       }).filter(Boolean).join(", ");
 
@@ -37,6 +39,7 @@ const Cart = () => {
         price: item.price,
         shop: item.shop.name,
         selectedVariation: selectedVariationValues,
+        productId: item.product.slug,
       };
     });
 
@@ -68,8 +71,6 @@ const Cart = () => {
       toast.warning("Vui lòng chọn sản phẩm để xóa!");
       return;
     }
-
-    // Xóa từng sản phẩm một cách tuần tự
     for (const id of allSelectedIds) {
       const [result, error] = await CartService.deleteCartItem(id);
       if (error) {
@@ -78,10 +79,8 @@ const Cart = () => {
         toast.success(`Đã xóa sản phẩm khỏi giỏ hàng!`);
       }
     }
-
-    // Tải lại danh sách sản phẩm và làm sạch số sản phẩm đã chọn
     fetchCartItems();
-    setSelectedItems({}); // Reset selected items
+    setSelectedItems({}); 
   };
 
   const groupedItems = cartItems.reduce((groups, item) => {
@@ -108,7 +107,12 @@ const Cart = () => {
       render: (_, record) => (
         <div className="flex items-center">
           <Avatar shape="square" src={record.image} size={64} className="mr-4" />
-          <span>{record.name}</span>
+          <Link to={`/product/${record.productId}`}>
+            <p className="text-blue-500 hover:underline">
+              {record.name}
+            </p>
+          </Link>
+          
         </div>
       ),
     },
@@ -158,7 +162,7 @@ const Cart = () => {
       key: "action",
       render: (_, record) => (
         <TollTip content="Xóa">
-                  <Button type="text" icon={<DeleteOutlined className="text-red-500" />} onClick={() => handleDelete(record.id)} />
+          <Button type="text" icon={<DeleteOutlined className="text-red-500" />} onClick={() => handleDelete(record.id)} />
         </TollTip>
       ),
     },
@@ -192,8 +196,6 @@ const Cart = () => {
           />
         </div>
       ))}
-
-      {/* Sticky Footer */}
       <div className="sticky bottom-0 bg-white shadow-lg p-4 flex justify-between items-center">
         <div className="flex items-center">
           <Button type="text" icon={<DeleteOutlined />} onClick={handleMultiDelete} className="mr-2 text-red-500" disabled={totalSelectedCount === 0}/>

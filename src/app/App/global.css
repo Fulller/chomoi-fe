@@ -5,6 +5,7 @@
   font-optical-sizing: auto;
   font-weight: 100px;
   font-style: normal;
+  transition: color 0.25s, background-color 0.25s;
 }
 .tooltip-scroll {
   max-height: 80vh; /* Chiều cao tối đa là 80% chiều cao màn hình */
@@ -29,4 +30,9 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Màu của thanh cuộn khi hover */
   background: #000000; /* Màu của thanh cuộn khi hover */
+}
+.error-validate-message {
+    text-align: end;
+    color     : red;
+    margin-top: 4px;
 }

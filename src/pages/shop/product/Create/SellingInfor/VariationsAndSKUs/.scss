@@ -1,0 +1,131 @@
+    .variations-skus {
+        display       : flex;
+        flex-direction: column;
+        grid-template : 24px;
+        gap           : 42px;
+
+
+
+        .variations-skus-item {
+
+            .title {
+                font-weight  : 600;
+                margin-bottom: 12px;
+            }
+
+            .variations {
+                display       : flex;
+                flex-direction: column;
+                flex          : 1;
+                gap           : 20px;
+
+
+
+                .variation {
+                    padding              : 12px 64px 12px 12px;
+                    display              : grid;
+                    grid-template-columns: 1fr 1fr;
+                    background-color     : rgba(0, 0, 0, 0.04);
+                    border-radius        : 6px;
+                    position             : relative;
+                    overflow             : hidden;
+                    column-gap           : 24px;
+
+                    .variation-name {
+                        display       : flex;
+                        flex-direction: column;
+                        gap           : 6px;
+                    }
+
+                    .options {
+                        display       : flex;
+                        flex-direction: column;
+                        gap           : 6px;
+
+
+
+                        .option {
+                            display    : flex;
+                            align-items: center;
+                            gap        : 4px;
+
+
+                            .option-index {
+                                margin-right: 8px;
+                                white-space : nowrap;
+                            }
+
+                            .ant-input {
+                                flex-grow: 1;
+                            }
+
+                            .delete-option-btn {
+                                color : rgba(0, 0, 0, 0.1);
+                                cursor: pointer;
+
+                                &:hover {
+                                    color: rgba(255, 0, 0, 0.5);
+                                }
+                            }
+                        }
+
+
+                        .add-option {
+                            padding         : 8px;
+                            display         : flex;
+                            align-items     : center;
+                            justify-content : center;
+                            background-color: rgb(182, 182, 255);
+                            gap             : 8px;
+                            border-radius   : 4px;
+
+                            &:hover {
+                                background-color: rgb(132, 132, 253);
+                            }
+                        }
+                    }
+
+                    .delete-varation-btn {
+                        position        : absolute;
+                        top             : 0;
+                        right           : 0;
+                        padding         : 12px;
+                        background-color: rgba(255, 0, 0, 0.2);
+                        cursor          : pointer;
+                        border-radius   : 0 6px;
+
+                        &:hover {
+                            background-color: rgba(255, 0, 0, 0.5);
+                        }
+                    }
+
+                }
+
+                .add-variation {
+                    padding         : 8px;
+                    display         : flex;
+                    align-items     : center;
+                    justify-content : center;
+                    background-color: rgb(182, 182, 255);
+                    gap             : 8px;
+                    border-radius   : 8px;
+
+                    &:hover {
+                        background-color: rgb(132, 132, 253);
+                    }
+                }
+            }
+
+            .sku-generator {
+                display: flex;
+
+            }
+        }
+    }
+
+    .sku-column {
+        display        : flex;
+        flex-direction : row;
+        align-items    : center;
+        justify-content: center;
+    }

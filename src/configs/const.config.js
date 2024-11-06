@@ -17,4 +17,19 @@ const ROLES = {
   ADMIN: "ADMIN",
 };
 
-export { ROUTE_TYPES, SERVER_URL, ROLES };
+const PRODUCT_STATUSES = {
+  PENDING: {
+    title: "Đang chờ duyệt",
+    actions: { ACTIVE: "Duyệt", REJECTED: "Từ chối" },
+  },
+  ACTIVE: {
+    title: "Đang bán",
+    actions: { BLOCKED: "Khóa" },
+  },
+  BLOCKED: {
+    title: "Đang bị khóa",
+    actions: { ACTIVE: "Mở khóa" },
+  },
+};
+
+export { ROUTE_TYPES, SERVER_URL, ROLES, PRODUCT_STATUSES };

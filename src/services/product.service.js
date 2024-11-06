@@ -7,6 +7,11 @@ const ProductService = {
   getByIdOrSlug(productId) {
     return service(axios.get(`/products/${productId}`));
   },
+  adminGetProducts({ status, page }) {
+    return service(
+      axios.get(`/products/admin/dashboard?status=${status}&page=${page}`)
+    );
+  },
 };
 
 export default ProductService;

@@ -26,16 +26,11 @@ export default [
     title: "Trang chủ shop",
   },
   {
-    path: "/shops/edit",
-    Page: Update,
-    Layout: MainLayout,
-    type: SHOP_ROUTE_TYPES.PRIVATE,
-    title: "Chỉnh sửa thông tin shop",
     path: "/@shop/order/all",
     Page: OrderAll,
     Layout: MainLayout,
     type: SHOP_ROUTE_TYPES.PRIVATE,
-    title: "Đơn hàng / Tất cả",
+    title: "Đơn hàng / Tấc cả",
   },
   {
     path: "/@shop/order/delivery",
@@ -106,6 +101,13 @@ export default [
     Layout: MainLayout,
     type: SHOP_ROUTE_TYPES.PRIVATE,
     title: "Quản lý shop / Hồ sơ",
+  },
+  {
+    path: "@/shops/edit",
+    Page: Update,
+    Layout: MainLayout,
+    type: SHOP_ROUTE_TYPES.PRIVATE,
+    title: "Chỉnh sửa thông tin shop",
   },
   {
     path: "/@shop/shop/setting",

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { setRoles } from "@redux/slices/auth.slice";
+import { setTokens } from "@redux/slices/auth.slice";
 
 export default function UpgradeToShop() {
   const [shopName, setShopName] = useState("");
@@ -21,12 +21,12 @@ export default function UpgradeToShop() {
       toast.error("Đăng ký cửa hàng thất bại: " + error.message);
       return;
     }
-    const [getRolesResult, getRolesError] = await AuthService.getRoles();
-    if (getRolesError) {
-      toast.error("handleUpgrade get role: " + error.message);
+    const [newTokensResult, newTokensError] = await AuthService.newTokens();
+    if (newTokensError) {
+      toast.error("newTokensError newTokensError: " + error.message);
       return;
     }
-    dispatch(setRoles(getRolesResult.data));
+    dispatch(setTokens(newTokensResult.data));
     toast.info("Đăng ký cửa hàng thành công: " + result.message);
     navigate("/@shop");
   };

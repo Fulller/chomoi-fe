@@ -37,8 +37,8 @@ const AuthService = {
       axios.post(getAuthUrl("/upgrade-to-shop"), { name: shopName })
     );
   },
-  getRoles() {
-    return service(axios.get(getAuthUrl("/roles")));
+  newTokens() {
+    return service(axios.get(getAuthUrl("/new-tokens")));
   },
 };
 

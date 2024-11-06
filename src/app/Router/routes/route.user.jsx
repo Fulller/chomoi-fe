@@ -14,9 +14,9 @@ import Setting from "@pages/user/Setting";
 import Cart from "@pages/user/Cart";
 import Orders from "@pages/user/Orders";
 import Account from "@pages/user/Account";
+import UpgradeToShop from "@pages/user/UpgradeToShop";
 
 import { USER_ROUTE_TYPES } from "../routeTypes/routeTypes";
-import UpgradeToShop from "@pages/shop/UpgradeToShop";
 
 export default [
   {

@@ -18,7 +18,10 @@ const AuthService = {
   },
   changePassword({ currentPassword, newPassword }) {
     return service(
-      axios.post(getAuthUrl("/change-password"), { currentPassword, newPassword })
+      axios.post(getAuthUrl("/change-password"), {
+        currentPassword,
+        newPassword,
+      })
     );
   },
   forgotPassword(email) {
@@ -29,11 +32,14 @@ const AuthService = {
       axios.post(getAuthUrl("/forgot-password/verify"), { code, newPassword })
     );
   },
-  upgradeToShop({shopName}){
+  upgradeToShop({ shopName }) {
     return service(
-      axios.post(getAuthUrl("/upgrade-to-shop"), {name: shopName})
-    )
-  }
+      axios.post(getAuthUrl("/upgrade-to-shop"), { name: shopName })
+    );
+  },
+  getRoles() {
+    return service(axios.get(getAuthUrl("/roles")));
+  },
 };
 
 export default AuthService;

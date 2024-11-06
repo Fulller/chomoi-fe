@@ -6,6 +6,7 @@ import {
   setTokens,
   setUser,
   setIsLogin,
+  setRoles,
 } from "@redux/slices/auth.slice";
 import env from "@configs/env.config";
 
@@ -29,12 +30,16 @@ const useInitialApp = () => {
   };
 
   const fetchUser = async () => {
-    const [result, error] = await AuthService.getUserInfo();
-    if (error) {
+    const [
+      [getUserInfoResult, getUserInfoError],
+      [getRolesResult, getRolesError],
+    ] = await Promise.all([AuthService.getUserInfo(), AuthService.getRoles()]);
+    if (getUserInfoError || getRolesError) {
       dispatch(setUser(null));
       return;
     }
-    dispatch(setUser(result.data));
+    dispatch(setUser(getUserInfoResult.data));
+    dispatch(setRoles(getRolesResult.data));
   };
 
   const fetchData = async () => {

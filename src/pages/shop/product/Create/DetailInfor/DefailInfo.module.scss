@@ -1,0 +1,48 @@
+.detailInfoContainer {
+    display              : grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap                  : 24px;
+
+    .attributeItem {
+        display              : grid;
+        grid-template-columns: 1fr 2fr;
+        gap                  : 16px;
+
+        .attributeLabel {
+            display        : flex;
+            font-weight    : 500;
+            margin-right   : 8px;
+            width          : 100%;
+            justify-content: end;
+            align-items    : center;
+
+            .requiredIcon {
+                color       : red;
+                margin-right: 4px;
+            }
+        }
+
+        .attributeControl {
+            width: 100%;
+
+            .customSelect {
+                width: 100%;
+            }
+
+            .customInput {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.attributeControl {
+    display    : flex;
+    align-items: center;
+}
+
+.customOption {
+    display    : flex;
+    align-items: center;
+    gap        : 6px;
+}

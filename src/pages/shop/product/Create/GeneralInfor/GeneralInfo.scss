@@ -1,0 +1,100 @@
+.general-info {
+    .form-item {
+        flex-direction: column;
+        margin-bottom : 24px;
+
+        .form-item-main {
+            display    : flex;
+            align-items: center;
+
+
+            .form-item-label {
+                display        : flex;
+                align-items    : center;
+                justify-content: end;
+                text-align     : end;
+                font-weight    : 500;
+                width          : 200px;
+                margin-right   : 12px;
+            }
+
+
+            .form-item-content {
+                flex: 1;
+            }
+
+            .ant-input,
+            .ant-select,
+            .ant-input-textarea {
+                width        : 100%;
+                border-radius: 4px;
+                border       : 1px solid #d9d9d9;
+
+                &:focus {
+                    border-color: #40a9ff;
+                    box-shadow  : 0 0 0 2px rgba(24, 144, 255, 0.2);
+                }
+            }
+
+            .ant-upload {
+                .ant-upload-list {
+                    margin-top: 8px;
+                }
+
+                .ant-upload-select {
+                    border-radius: 4px;
+                }
+            }
+
+            .ant-btn {
+                border-radius   : 4px;
+                background-color: #1890ff;
+                color           : #fff;
+
+                &:hover {
+                    background-color: #40a9ff;
+                }
+            }
+
+            .category {
+                background-color: rgba(109, 109, 109, 0.1);
+                padding         : 12px;
+                border-radius   : 4px;
+                cursor          : pointer;
+
+                &:hover {
+                    background-color: rgba(109, 109, 109, 0.2);
+                }
+
+                .category-field {
+                    display        : flex;
+                    justify-content: space-between;
+
+
+                    div {
+                        .category-field-selected {
+                            font-weight: 500;
+                        }
+
+                        .category-field-unselected {
+                            opacity: 0.2;
+                        }
+                    }
+
+                    .category-field-icon {
+                        color: gray;
+                    }
+
+                }
+
+            }
+        }
+
+        .error-validate-message {
+            text-align: end;
+            color     : red;
+            margin-top: 4px;
+        }
+
+    }
+}

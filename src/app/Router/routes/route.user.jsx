@@ -14,7 +14,8 @@ import Setting from "@pages/user/Setting";
 import Cart from "@pages/user/Cart";
 import Orders from "@pages/user/Orders";
 import Account from "@pages/user/Account";
-
+import ProductDetail from "@pages/user/Product";
+import Shop from "@pages/user/Shop";
 import { USER_ROUTE_TYPES } from "../routeTypes/routeTypes";
 import Checkout from "@pages/user/Orders/Checkout";
 
@@ -78,7 +79,7 @@ export default [
   {
     path: "/cart",
     Page: Cart,
-    Layout: MainLayout,
+    Layout: AccountLayout,
     type: USER_ROUTE_TYPES.PRIVATE,
     title: "Giỏ hàng",
   },
@@ -124,4 +125,19 @@ export default [
     type: USER_ROUTE_TYPES.PUBLIC,
     title: "Không tìm thấy trang",
   },
+  {
+    path: "/product/:id",
+    Page: ProductDetail,
+    Layout: MainLayout,
+    type: USER_ROUTE_TYPES.PUBLIC,
+    title: "Sản phẩm",
+  },
+  {
+    path: "/shop",
+    Page: Shop,
+    Layout: MainLayout,
+    type: USER_ROUTE_TYPES.PUBLIC,
+    title: "Cửa hàng",
+  }
+  
 ];

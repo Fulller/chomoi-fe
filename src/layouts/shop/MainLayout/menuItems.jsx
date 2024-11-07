@@ -9,7 +9,7 @@ export const menuItems = [
     title: "Đơn hàng",
     items: [
       { label: "Tất cả", path: "order/all" },
-      { label: "Giao hàng loạt", path: "order/delivery" },
+      { label: "Chờ xác nhận", path: "order/delivery" },
       { label: "Đơn hủy", path: "order/canceled" },
       { label: "Trả hàng", path: "order/refund" },
     ],

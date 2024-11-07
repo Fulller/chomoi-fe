@@ -1,6 +1,6 @@
 import adminRoutes from "./routes/route.admin";
-import shopRoutes from "./routes/route.user";
-import userRoutes from "./routes/route.shop";
+import shopRoutes from "./routes/route.shop";
+import userRoutes from "./routes/route.user";
 
 const allRoutes = [...adminRoutes, ...shopRoutes, ...userRoutes];
 

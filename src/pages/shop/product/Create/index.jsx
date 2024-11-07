@@ -150,7 +150,7 @@ const CreateProductPage = () => {
 
   const handleSubmit = async () => {
     setIsloading(true);
-    const isFormOK = await handleValidate();
+    const isFormOK = await handleValidate();  
     if (!isFormOK) {
       setIsloading(false);
       return;
@@ -167,6 +167,7 @@ const CreateProductPage = () => {
         productAttributes: state.productAttributes.filter((pA) => pA.value),
       });
     if (createProductError) {
+      console.error(createProductError);
       setIsloading(false);
       return;
     }

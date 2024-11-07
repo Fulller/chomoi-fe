@@ -6,10 +6,13 @@ import { FiShoppingBag } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import commonSelector from "@redux/selector/common.selector";
+
 export default function Actions() {
   const isLoging = useSelector((state) => state.auth.isLoging);
-  const cartCount = 10;
-  const orderCount = 1;
+  const cartCount = useSelector(commonSelector.getTotalCartItem);
+  const orderCount = useSelector(commonSelector.getTotalOrder);
+
 
   const menu = [
     {

@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "@services/auth.service";
+import CartService from "@services/cart.service";
 import {
   setAccessToken,
   setTokens,
   setUser,
   setIsLogin,
 } from "@redux/slices/auth.slice";
+import commonSlice from "@redux/slices/common.slice";
 import env from "@configs/env.config";
 
 const useInitialApp = () => {
@@ -36,11 +38,19 @@ const useInitialApp = () => {
     }
     dispatch(setUser(result.data));
   };
+  
+  const fetchTotalCartItem = async () => {
+    const [result, error] = await CartService.getAllCartItems();
+    if (error) {
+      return;
+    }
+    dispatch(commonSlice.actions.setTotalCartItem(result.data.cartItems.length));
+  }
 
   const fetchData = async () => {
     await refreshToken();
     if (!isLoging) return;
-    await fetchUser();
+    await Promise.all([fetchUser(),fetchTotalCartItem()]);
   };
 
   useEffect(() => {

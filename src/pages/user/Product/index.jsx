@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import useMessageByApiCode from "@hooks/useMessageByApiCode";
-import { Row, Col, Rate, Carousel, Button, Descriptions, Radio, InputNumber, Modal, Avatar, Badge} from 'antd';
+import { Row, Col, Rate, Carousel, Button, Descriptions, Radio, InputNumber, Modal, Avatar, Badge } from 'antd';
 import { useParams } from 'react-router-dom';
-import { LeftOutlined, RightOutlined, AntDesignOutlined  } from '@ant-design/icons';
+import { LeftOutlined, RightOutlined, AntDesignOutlined } from '@ant-design/icons';
 import ProductService from '@services/product.service';
 import CartService from '@services/cart.service';
 import './Product.scss';
-import { useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-
-
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import commonSlice from '@redux/slices/common.slice';
 
 const ProductDetails = () => {
   const [visible, setVisible] = useState(false);
@@ -25,12 +24,13 @@ const ProductDetails = () => {
   const [errorMessage, setErrorMessage] = useState();
   const getMessage = useMessageByApiCode();
   const isLoging = useSelector((state) => state.auth.isLoging);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (value) => {
     setQuantity(value);
   };
-  
+
   useEffect(() => {
     fetchProduct(id);
   }, [id]);
@@ -41,7 +41,10 @@ const ProductDetails = () => {
       console.error(error);
     } else {
       setProduct(result.data);
-      setPrice(result.data.skus[0]?.price || 0); // Default price from the first SKU if available
+      setPrice(result.data.skus[0]?.price || 0); // Giá mặc định từ SKU đầu tiên nếu có
+      if (result.data.isSimple) {
+        setSelectedSKUId(result.data.skus[0]?.id); // Gán SKU ID cho sản phẩm đơn giản
+      }
     }
   }
 
@@ -55,15 +58,18 @@ const ProductDetails = () => {
 
     if (matchingSku) {
       setMaxQuantity(matchingSku.stock);
-      setPrice(matchingSku.price); // Update the price based on the matched SKU
-      setSelectedSKUId(matchingSku.id); 
+      setPrice(matchingSku.price); // Cập nhật giá theo SKU tương ứng
+      setSelectedSKUId(matchingSku.id);
     } else {
       setMaxQuantity(1);
-      setPrice(product.skus[0]?.price || 0); // Default price if no matching SKU
+      setPrice(product.skus[0]?.price || 0); // Giá mặc định nếu không có SKU tương ứng
     }
   };
 
   const isAddToCartEnabled = () => {
+    if (product.isSimple) {
+      return true; // Sản phẩm đơn giản thì bật nút thêm vào giỏ hàng luôn
+    }
     return Object.keys(selectedVariations).length === product.variations.length && selectedSKUId !== null;
   };
 
@@ -77,37 +83,43 @@ const ProductDetails = () => {
     );
   };
 
-  const handleAddToCart = async (skuId, quantity) =>{
-    if(isLoging)
-    {
-      if(skuId == null)
-      {
-          toast.error("", {
-              autoClose: 3000,
-          });
-          return;
-      }
-      else{
-        const [result, error] = await CartService.addToCart({skuId, quantity});
-        if (error) {
-          console.log(error);
-          setErrorMessage(getMessage(error.code));
-          toast.error(getMessage(error.code), {
-              autoClose: 3000,
-          });
-          return;
+  const handleAddToCart = async (skuId, quantity) => {
+    if (isLoging) {
+      if (!product.isSimple && skuId == null) {
+        toast.error("Vui lòng chọn một biến thể sản phẩm", {
+          autoClose: 3000,
+        });
+        return;
       } else {
-          toast.success("Thêm vào giỏ hàng thành công!", {
+          const [cartResult, getError] = await CartService.getAllCartItems();
+          const [result, error] = await CartService.addToCart({ skuId, quantity });
+          if (error) {
+            console.log(error);
+            setErrorMessage(getMessage(error.code));
+            toast.error(getMessage(error.code), {
               autoClose: 3000,
-          });
-          setLoading(false);
-      }
-      }
-    }
-    else{
+            });
+            return;
+          } else {
+            toast.success("Thêm vào giỏ hàng thành công!", {
+              autoClose: 3000,
+            });
+          }
+          
+          const existingItem = cartResult.data.cartItems.find((item) => item.skuId === skuId);
+          console.log(existingItem);
+          if(existingItem){
+            console.log('Khong tang');
+          }
+          else{
+            dispatch(commonSlice.actions.increaseTotalItem());
+          }
+      }          
+
+    } else {
       navigate('/login');
     }
-  }
+  };
 
   const showModal = (index) => {
     setSelectedImageIndex(index);
@@ -125,85 +137,155 @@ const ProductDetails = () => {
   const handleNext = () => {
     setSelectedImageIndex((prevIndex) => (prevIndex < product.images.length - 1 ? prevIndex + 1 : 0));
   };
-
   if (!product) return <div>Loading...</div>;
-
   return (
     <div className="container mx-auto p-4">
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
-          <Carousel autoplay>
-            {product.images.map((image, index) => (
+        <Carousel autoplay>
+          {product.images && product.images.length > 0 ? (
+            product.images.map((image, index) => (
               <div key={index} className="img-container" onClick={() => showModal(index)}>
-                <img src={image.path} alt={product.name} className="fixed-size-img" />
+                <img
+                  src={image.path}
+                  alt={product.name}
+                  className="fixed-size-img"
+                  style={{ objectFit: 'contain', width: '100%', height: 'auto' }}
+                />
               </div>
-            ))}
-          </Carousel>
+            ))
+          ) : null}
+          {product.video && (
+            <div className="flex justify-center items-center">
+              <video className="max-w-full max-h-full object-contain cursor-pointer" controls>
+                <source src={product.video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )}
+          {(!product.images || (product.images.length === 0 && !product.video)) && (
+            <div className="img-container">
+              <p>No media available</p>
+            </div>
+          )}
+        </Carousel>
         </Col>
         <Col xs={24} md={12}>
           <h1 className="text-2xl font-bold">{product.name}</h1>
           <Rate disabled defaultValue={product.rating} style={{ fontSize: '20px' }} className="my-2" />
           <p>{product.sold} Đã bán</p>
           <p className="text-2xl font-semibold text-red-500">{price ? price.toLocaleString() : 0} VND</p>
-          <p className='mt-0'>{product.description}</p>
-          <div className='flex flex-col'>
-            {product.variations.map((variation) => (
-              <div className='flex flex-row items-center mb-4' key={variation.id}>
-                <h4 className='mr-4 w-24'>{variation.name}</h4>
-                <Radio.Group 
-                  defaultValue={variation.options[0].id} 
-                  size="large" 
-                  className='mt-0'
-                  onChange={(e) => handleVariationChange(variation.name, e.target.value)}
-                >
-                  {variation.options.map((option) => (
-                    <Radio.Button
-                      key={option.id}
-                      className="mr-1"
-                      value={option.id}
-                      disabled={isOptionDisabled(variation.name, option.id)}
-                    >
-                      {option.value}
-                    </Radio.Button>
-                  ))}
-                </Radio.Group>
-              </div>
-            ))}
-          </div>
+          <p className='mt-1'>{product.description}</p>
+          {!product.isSimple && (
+            <div className='flex flex-col'>
+              {product.variations.map((variation) => (
+                <div className='flex flex-row items-center mb-4' key={variation.id}>
+                  <h4 className='mr-4 w-24 font-semibold'>{variation.name}</h4>
+                  <Radio.Group
+                    defaultValue={variation.options[0].id}
+                    size="large"
+                    className='mt-4'
+                    onChange={(e) => handleVariationChange(variation.name, e.target.value)}
+                  >
+                    {variation.options.map((option) => (
+                      <Radio.Button
+                        key={option.id}
+                        className="mr-1"
+                        value={option.id}
+                        disabled={isOptionDisabled(variation.name, option.id)}
+                      >
+                        {option.value}
+                      </Radio.Button>
+                    ))}
+                  </Radio.Group>
+                </div>
+              ))}
+            </div>
+          )}
           <div className='flex flex-row items-center'>
             <InputNumber min={1} max={maxQuantity} defaultValue={1} className='mt-4' onChange={handleChange} value={quantity} />
             <p className='mt-4 ml-2 text-gray-400'>{maxQuantity} sản phẩm có sẵn</p>
           </div>
-          <Button type="primary" className="w-96 mt-4" onClick={()=> handleAddToCart(selectedSKUId, quantity)} disabled={!isAddToCartEnabled()}>Thêm vào giỏ</Button>
+          <Button type="primary" className="w-96 mt-4" onClick={() => handleAddToCart(selectedSKUId, quantity)} disabled={!isAddToCartEnabled()}>
+            Thêm vào giỏ
+          </Button>
         </Col>
       </Row>
-      
-      <div className="shop-info flex items-center my-4 p-4 border rounded-lg">
-            <Avatar
-              size={64}
-              src={product.shop?.avatar || <AntDesignOutlined />}
-              className="mr-4"
-            />
-            <div className="flex flex-col">
-              <h3 className="text-lg font-bold">{product.shop?.name || "Shop"}</h3>
-              <Badge
-                status={product.shop?.status === "ACTIVE" ? "success" : "error"}
-                text={product.shop?.status === "ACTIVE" ? "Đang hoạt động" : "Ngừng hoạt động"}
-              />
-            </div>
-      </div>
 
-      
-      <Descriptions title="Thông tin chi tiết" bordered className="mt-8" column={1}>
+      <div className="shop-info flex items-center my-4 p-4 border rounded-lg">
+        <Avatar size={64} src={product.shop?.avatar || <AntDesignOutlined />} className="mr-4" />
+        <div className="flex flex-col">
+          <h3 className="text-lg font-bold">{product.shop?.name || "Shop"}</h3>
+          <Badge
+            status={product.shop?.status === "ACTIVE" ? "success" : "default"}
+            text={product.shop?.status === "ACTIVE" ? "Hoạt động" : "Tạm ngừng"}
+          />
+        </div>
+      </div>
+      <Descriptions title="Thông số kỹ thuật" bordered className="mt-8" column={1}>
         {product.productAttributes.map((attribute, index) => (
           <Descriptions.Item key={index} label={attribute.attribute.name}>{attribute.value}</Descriptions.Item>
         ))}
       </Descriptions>
-      <Modal visible={visible} onCancel={handleCancel} footer={null} width={500} className="text-center">
-        <Button icon={<LeftOutlined />} onClick={handlePrev} style={{ position: 'absolute', top: '50%', left: '0', transform: 'translateY(-50%)' }} />
-        <img src={product.images[selectedImageIndex].path} alt="Product Image" style={{ width: '100%' }} />
-        <Button icon={<RightOutlined />} onClick={handleNext} style={{ position: 'absolute', top: '50%', right: '0', transform: 'translateY(-50%)' }} />
-      </Modal>
+      <Modal visible={visible} onCancel={handleCancel} footer={null} centered>
+  <div className="modal-content" style={{ position: 'relative', width: '100%', height: '100%' }}>
+    {product.video && selectedImageIndex === -1 ? (
+      <video
+        className="modal-video"
+        controls
+        style={{
+          objectFit: 'contain',  // Đảm bảo video không bị phóng to quá mức
+          width: '100%',
+          height: 'auto',
+        }}
+      >
+        <source src={product.video} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    ) : (
+      <img
+        src={product.images[selectedImageIndex]?.path}
+        alt={product.name}
+        className="modal-image"
+        style={{
+          objectFit: 'contain',  // Đảm bảo hình ảnh không bị phóng to quá mức
+          width: '100%',
+          height: 'auto',
+        }}
+      />
+    )}
+    <div className="modal-actions" style={{
+      position: 'absolute',
+      top: '50%',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      transform: 'translateY(-50%)',
+    }}>
+      <Button
+        icon={<LeftOutlined />}
+        onClick={handlePrev}
+        style={{
+          background: 'rgba(0, 0, 0, 0.5)',
+          color: 'white',
+          border: 'none',
+          borderRadius: '50%',
+        }}
+      />
+      <Button
+        icon={<RightOutlined />}
+        onClick={handleNext}
+        style={{
+          background: 'rgba(0, 0, 0, 0.5)',
+          color: 'white',
+          border: 'none',
+          borderRadius: '50%',
+        }}
+      />
+    </div>
+  </div>
+</Modal>
+
     </div>
   );
 };

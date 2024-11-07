@@ -167,6 +167,7 @@ const CreateProductPage = () => {
         productAttributes: state.productAttributes.filter((pA) => pA.value),
       });
     if (createProductError) {
+      console.error(createProductError);
       setIsloading(false);
       return;
     }

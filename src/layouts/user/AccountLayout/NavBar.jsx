@@ -67,7 +67,7 @@ const items = [
         children: [
             {
                 label: 'Giỏ hàng của tôi',
-                key: 'cart',
+                key: 'mycart',
                 path: "/cart"
             }
         ]

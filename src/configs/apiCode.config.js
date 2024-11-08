@@ -27,6 +27,7 @@ const apiCode = {
   "attribute-option-s-01": "Cập nhật option thành công",
   "attribute-option-s-02": "Xóa option thành công",
   "attribute-option-1-01": "Không tìm thấy option",
+  "product-s-09": "Thay đổi trạng thái thành công",
 };
 
 export default apiCode;

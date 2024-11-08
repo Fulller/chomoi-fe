@@ -1,8 +1,9 @@
 import ProductService from "@services/product.service";
 import { useEffect, useState } from "react";
-import { message, Select, Pagination, Card, Avatar, List } from "antd";
+import { message, Select, Pagination, Card, Avatar, List, Button } from "antd";
 import { useLocation, Link } from "react-router-dom";
 import { PRODUCT_STATUSES } from "@configs/const.config";
+import useMessageByApiCode from "@hooks/useMessageByApiCode";
 
 function Review() {
   const location = useLocation();
@@ -14,6 +15,8 @@ function Review() {
   const [page, setPage] = useState(initialPage);
   const [status, setStatus] = useState(initialStatus);
 
+  const messageApi = useMessageByApiCode();
+
   useEffect(() => {
     fetchProductPage();
   }, [page, status]);
@@ -23,10 +26,13 @@ function Review() {
       status,
       page,
     });
+
     if (error) {
-      message.info("Không thể load product 🙉");
+      message.info("Không thể load sản phẩm 🙉");
       return;
     }
+
+    console.log('API Response:', result.data);
     setProductPage(result.data);
   }
 
@@ -37,6 +43,16 @@ function Review() {
 
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber - 1);
+  };
+
+  const handleActionClick = async (productId, status) => {
+    const [result, error] = await ProductService.updateProductStatus(productId, status);
+    if (error) {
+      message.error(messageApi(error.code));
+    } else {
+      message.success(messageApi(result.code));
+      fetchProductPage();
+    }
   };
 
   if (!productPage) {
@@ -50,11 +66,17 @@ function Review() {
         onChange={handleStatusChange}
         style={{ width: 200, marginBottom: 16 }}
       >
-        {Object.keys(PRODUCT_STATUSES).map((STATUS) => (
-          <Select.Option value={STATUS}>
-            {PRODUCT_STATUSES[STATUS].title}
-          </Select.Option>
-        ))}
+        {Object.keys(PRODUCT_STATUSES).map((STATUS) => {
+          if (STATUS === "DRAFT") {
+            return null;
+          }
+
+          return (
+            <Select.Option key={STATUS} value={STATUS}>
+              {PRODUCT_STATUSES[STATUS].title}
+            </Select.Option>
+          );
+        })}
       </Select>
 
       <List
@@ -67,25 +89,52 @@ function Review() {
               cover={<img alt="thumbnail" src={product.thumbnail} />}
             >
               <Card.Meta
-                title={
-                  <Link to={`/product/${product.slug}`}>{product.name}</Link>
-                }
+                title={<Link to={`/product/${product.slug}`}>{product.name}</Link>}
                 description={
                   <div>
-                    <p>
-                      Giá: {product.minPrice} - {product.maxPrice}
-                    </p>
-                    <p>Đã bán: {product.sold}</p>
-                    <p>Đánh giá: {product.rating}</p>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginTop: 8,
-                      }}
-                    >
+                    <p>Price: {product.minPrice} - {product.maxPrice}</p>
+                    <p>Sold: {product.sold}</p>
+                    <p>Rating: {product.rating}</p>
+
+                    <div style={{ display: "flex", alignItems: "center", marginTop: 8 }}>
                       <Avatar src={product.shop.avatar} />
                       <span style={{ marginLeft: 8 }}>{product.shop.name}</span>
+                    </div>
+
+                    <div style={{ marginTop: 16 }}>
+                      {status === "PENDING" && (
+                        <>
+                          <Button
+                            type="primary"
+                            onClick={() => handleActionClick(product.id, "ACTIVE")}
+                            style={{ marginRight: 8 }}
+                          >
+                            {PRODUCT_STATUSES.PENDING.actions.ACTIVE}
+                          </Button>
+                          <Button
+                            type="primary" danger
+                            onClick={() => handleActionClick(product.id, "REJECTED")}
+                          >
+                            {PRODUCT_STATUSES.PENDING.actions.REJECTED}
+                          </Button>
+                        </>
+                      )}
+                      {status === "ACTIVE" && (
+                        <Button
+                          type="primary" danger
+                          onClick={() => handleActionClick(product.id, "BLOCKED")}
+                        >
+                          {PRODUCT_STATUSES.ACTIVE.actions.BLOCKED}
+                        </Button>
+                      )}
+                      {status === "BLOCKED" && (
+                        <Button
+                          type="primary"
+                          onClick={() => handleActionClick(product.id, "DRAFT")}
+                        >
+                          {PRODUCT_STATUSES.BLOCKED.actions.DRAFT}
+                        </Button>
+                      )}
                     </div>
                   </div>
                 }
@@ -107,3 +156,11 @@ function Review() {
 }
 
 export default Review;
+
+
+
+
+
+
+
+

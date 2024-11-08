@@ -28,7 +28,11 @@ const PRODUCT_STATUSES = {
   },
   BLOCKED: {
     title: "Đang bị khóa",
-    actions: { ACTIVE: "Mở khóa" },
+    actions: { DRAFT: "Mở khóa (Nháp)" },
+  },
+  DRAFT: {
+    title: "",
+    actions: { },
   },
 };
 

@@ -12,6 +12,10 @@ const ProductService = {
       axios.get(`/products/admin/dashboard?status=${status}&page=${page}`)
     );
   },
+  updateProductStatus(productId, status) {
+    return service(axios.put(`products/admin/${productId}/change-status`, {status})
+    );
+  },
 };
 
 export default ProductService;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import useMessageByApiCode from "@hooks/useMessageByApiCode";
 import { Row, Col, Rate, Carousel, Button, Descriptions, Radio, InputNumber, Modal, Avatar, Badge } from 'antd';
-import { useParams } from 'react-router-dom';
+import { useHref, useParams } from 'react-router-dom';
 import { LeftOutlined, RightOutlined, AntDesignOutlined } from '@ant-design/icons';
 import ProductService from '@services/product.service';
 import CartService from '@services/cart.service';
@@ -10,6 +10,7 @@ import './Product.scss';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import commonSlice from '@redux/slices/common.slice';
+import {setRedirect} from '@redux/slices/auth.slice';
 
 const ProductDetails = () => {
   const [visible, setVisible] = useState(false);
@@ -26,7 +27,7 @@ const ProductDetails = () => {
   const isLoging = useSelector((state) => state.auth.isLoging);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const href = useHref();
   const handleChange = (value) => {
     setQuantity(value);
   };
@@ -117,6 +118,8 @@ const ProductDetails = () => {
       }          
 
     } else {
+      dispatch(setRedirect(href));
+      console.log(href);
       navigate('/login');
     }
   };
@@ -228,63 +231,63 @@ const ProductDetails = () => {
         ))}
       </Descriptions>
       <Modal visible={visible} onCancel={handleCancel} footer={null} centered>
-  <div className="modal-content" style={{ position: 'relative', width: '100%', height: '100%' }}>
-    {product.video && selectedImageIndex === -1 ? (
-      <video
-        className="modal-video"
-        controls
-        style={{
-          objectFit: 'contain',  // Đảm bảo video không bị phóng to quá mức
+      <div className="modal-content" style={{ position: 'relative', width: '100%', height: '100%' }}>
+        {product.video && selectedImageIndex === -1 ? (
+          <video
+            className="modal-video"
+            controls
+            style={{
+              objectFit: 'contain',  // Đảm bảo video không bị phóng to quá mức
+              width: '100%',
+              height: 'auto',
+            }}
+          >
+            <source src={product.video} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img
+            src={product.images[selectedImageIndex]?.path}
+            alt={product.name}
+            className="modal-image"
+            style={{
+              objectFit: 'contain',  // Đảm bảo hình ảnh không bị phóng to quá mức
+              width: '100%',
+              height: 'auto',
+            }}
+          />
+        )}
+        <div className="modal-actions" style={{
+          position: 'absolute',
+          top: '50%',
           width: '100%',
-          height: 'auto',
-        }}
-      >
-        <source src={product.video} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    ) : (
-      <img
-        src={product.images[selectedImageIndex]?.path}
-        alt={product.name}
-        className="modal-image"
-        style={{
-          objectFit: 'contain',  // Đảm bảo hình ảnh không bị phóng to quá mức
-          width: '100%',
-          height: 'auto',
-        }}
-      />
-    )}
-    <div className="modal-actions" style={{
-      position: 'absolute',
-      top: '50%',
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'space-between',
-      transform: 'translateY(-50%)',
-    }}>
-      <Button
-        icon={<LeftOutlined />}
-        onClick={handlePrev}
-        style={{
-          background: 'rgba(0, 0, 0, 0.5)',
-          color: 'white',
-          border: 'none',
-          borderRadius: '50%',
-        }}
-      />
-      <Button
-        icon={<RightOutlined />}
-        onClick={handleNext}
-        style={{
-          background: 'rgba(0, 0, 0, 0.5)',
-          color: 'white',
-          border: 'none',
-          borderRadius: '50%',
-        }}
-      />
-    </div>
-  </div>
-</Modal>
+          display: 'flex',
+          justifyContent: 'space-between',
+          transform: 'translateY(-50%)',
+        }}>
+          <Button
+            icon={<LeftOutlined />}
+            onClick={handlePrev}
+            style={{
+              background: 'rgba(0, 0, 0, 0.5)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+            }}
+          />
+          <Button
+            icon={<RightOutlined />}
+            onClick={handleNext}
+            style={{
+              background: 'rgba(0, 0, 0, 0.5)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+            }}
+          />
+        </div>
+      </div>
+    </Modal>
 
     </div>
   );

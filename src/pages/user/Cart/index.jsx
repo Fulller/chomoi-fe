@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, Button, InputNumber, Avatar, Table } from "antd";
+import { Dropdown, Button, InputNumber, Avatar, Table, Image  } from "antd";
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import CartService from "@services/cart.service";
 import './Cart.scss';
@@ -12,11 +12,33 @@ import { useSelector, useDispatch } from "react-redux";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState({});
+  const [isSameShop, setIsSameShop] = useState(false); 
+
   const dispatch = useDispatch();
+
 
   useEffect(() => {
     fetchCartItems();
   }, []);
+
+  // Hàm để kiểm tra xem tất cả các sản phẩm được chọn có cùng shop hay không
+  const checkSameShop = () => {
+    const selectedShops = Object.keys(selectedItems).filter(shop => selectedItems[shop]?.length > 0);
+    setIsSameShop(selectedShops.length === 1); // Nếu chỉ có 1 shop được chọn, thì isSameShop = true
+  };
+
+  // Cập nhật lại khi selectedItems thay đổi
+  useEffect(() => {
+    checkSameShop();
+  }, [selectedItems]);
+
+  // Hàm để xử lý sự thay đổi khi chọn hoặc bỏ chọn các sản phẩm
+  const handleRowSelectionChange = (shop, selectedRowKeys) => {
+    setSelectedItems((prevSelected) => ({
+      ...prevSelected,
+      [shop]: selectedRowKeys,
+    }));
+  };
 
   const fetchCartItems = async () => {
     const [result, error] = await CartService.getAllCartItems();
@@ -41,6 +63,7 @@ const Cart = () => {
         price: item.price,
         shopImage: item.shop.avatar,
         shop: item.shop.name,
+        shopId: item.shop.id,
         selectedVariation: selectedVariationValues,
         productId: item.product.id,
       };
@@ -109,16 +132,17 @@ const Cart = () => {
       title: "Sản phẩm",
       dataIndex: "product",
       key: "product",
-      width: "25%",
+      width: "40%",
       render: (_, record) => (
         <div className="flex items-center">
-          <Avatar shape="square" src={record.image} size={64} className="mr-4" />
+          <Image width={200} src={record.image} alt="Hình ảnh sản phẩm" className="mr-2"/>
           <Link to={`/product/${record.productId}`}>
-            <p className="text-blue-500 hover:underline">
-              {record.name}
-            </p>
+          <Tooltip title="Click để xem chi tiết">
+            <p className="text-blue-500 hover:underline ml-2">
+                {record.name}
+              </p>
+          </Tooltip>
           </Link>
-
         </div>
       ),
     },
@@ -128,28 +152,21 @@ const Cart = () => {
       key: "variation",
       width: "25%",   
       render: (_, record) => (
-        <Dropdown
-          disabled
-          overlay={
-            <div className="bg-white border rounded shadow-md">
+        
+            <div className="text-red-300 font-medium">
               {record.selectedVariation.split(", ").map((variation, index) => (
-                <Button key={index} type="text" className="w-full text-left px-4 py-2">
-                  {variation}
-                </Button>
+                <p key={index} type="text" className="w-full text-left px-4 py-2">
+                  {variation || "Không có"}
+                </p>
               ))}
-            </div>
-          }
-          trigger={["click"]}
-        >
-          <Button className="w-full text-left">{record.selectedVariation}</Button>
-        </Dropdown>
+              </div>
       ),
     },
     {
       title: "Số lượng",
       dataIndex: "quantity",
       key: "quantity",
-      width: "20%",   
+      width: "15%",   
       render: (_, record) => (
         <div className="flex items-center">
           <Tooltip title="Tăng">
@@ -164,14 +181,14 @@ const Cart = () => {
       title: "Giá",
       dataIndex: "price",
       key: "price",
-      width: "20%",
+      width: "15%",
       render: (price) => <span>{price.toLocaleString()} VND</span>,
     },
     {
       title: "",
       dataIndex: "action",
       key: "action",
-      width: "10%",
+      width: "5%",
       render: (_, record) => (
         <Tooltip title="Xóa">
           <Button type="text" icon={<DeleteOutlined className="text-red-500" />} onClick={() => handleDelete(record.id)} />
@@ -185,12 +202,12 @@ const Cart = () => {
       <h2 className="text-2xl font-bold mb-6">Giỏ hàng</h2>
       {Object.entries(groupedItems).map(([shop, items]) => (
         <div key={shop} className="mb-8">
-          <div className="flex items-center mb-4">
-            <Avatar size={40} src={items[0].shopImage} className="mr-4" />
-            <Tooltip title="Click để xem sản phẩm!">
+          <Link to={`/shop/${items[0].shopId}`} >
+            <div className="flex items-center mb-4">
+              <Avatar size={40} src={items[0].shopImage} className="mr-4" />
               <h3 className="text-xl font-semibold">{shop}</h3>
-            </Tooltip>
-          </div>
+            </div>
+          </Link>
           <Table
             dataSource={items}
             columns={columns}
@@ -200,12 +217,7 @@ const Cart = () => {
             className="shadow-lg"
             rowSelection={{
               selectedRowKeys: selectedItems[shop] || [],
-              onChange: (selectedRowKeys) => {
-                setSelectedItems((prevSelected) => ({
-                  ...prevSelected,
-                  [shop]: selectedRowKeys,
-                }));
-              },
+              onChange: (selectedRowKeys) => handleRowSelectionChange(shop, selectedRowKeys),
             }}
           />
         </div>
@@ -221,8 +233,10 @@ const Cart = () => {
         </div>
         <div className="flex items-center">
           <span className="font-semibold mr-4">Tổng tiền: {totalPrice.toLocaleString()} VND</span>
-          <Button type="primary" size="large" disabled={totalSelectedCount === 0}>
-            Thanh toán
+          <Button type="primary" size="large" disabled={totalSelectedCount === 0 || !isSameShop} onClick={() => {
+            console.log(selectedItems);
+          }}>
+            Mua ngay
           </Button>
         </div>
       </div>

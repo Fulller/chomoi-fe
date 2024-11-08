@@ -1,5 +1,5 @@
 import { MdOutlineAccountCircle } from "react-icons/md";
-import { RiBillLine } from "react-icons/ri";
+import { RiBillLine, RiShoppingCartLine  } from "react-icons/ri";
 import { Menu } from 'antd';
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -59,6 +59,19 @@ const items = [
             },
         ],
     },
+    {
+        label: 'Giỏ hàng',
+        key: 'cart',
+        icon: <RiShoppingCartLine  />,
+        path: "/cart",
+        children: [
+            {
+                label: 'Giỏ hàng của tôi',
+                key: 'mycart',
+                path: "/cart"
+            }
+        ]
+    }
 ];
 function NavBar() {
     const [current, setCurrent] = useState('profile'); // Đặt giá trị mặc định

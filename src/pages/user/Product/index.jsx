@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import useMessageByApiCode from "@hooks/useMessageByApiCode";
 import { Row, Col, Rate, Carousel, Button, Descriptions, Radio, InputNumber, Modal, Avatar, Badge } from 'antd';
-import { useHref, useParams } from 'react-router-dom';
+import { useHref, useParams, Link } from 'react-router-dom';
 import { LeftOutlined, RightOutlined, AntDesignOutlined } from '@ant-design/icons';
 import ProductService from '@services/product.service';
 import CartService from '@services/cart.service';
@@ -178,7 +178,7 @@ const ProductDetails = () => {
           <Rate disabled defaultValue={product.rating} style={{ fontSize: '20px' }} className="my-2" />
           <p>{product.sold} Đã bán</p>
           <p className="text-2xl font-semibold text-red-500">{price ? price.toLocaleString() : 0} VND</p>
-          <p className='mt-1'>{product.description}</p>
+          
           {!product.isSimple && (
             <div className='flex flex-col'>
               {product.variations.map((variation) => (
@@ -214,9 +214,11 @@ const ProductDetails = () => {
           </Button>
         </Col>
       </Row>
-
+      
       <div className="shop-info flex items-center my-4 p-4 border rounded-lg">
-        <Avatar size={64} src={product.shop?.avatar || <AntDesignOutlined />} className="mr-4" />
+      <Link to={`/shop/${product.shop.id}`}>
+      <Avatar size={64} src={product.shop?.avatar || <AntDesignOutlined />} className="mr-4" style={{ border: '1px solid pink' }} />
+      </Link>
         <div className="flex flex-col">
           <h3 className="text-lg font-bold">{product.shop?.name || "Shop"}</h3>
           <Badge
@@ -230,6 +232,9 @@ const ProductDetails = () => {
           <Descriptions.Item key={index} label={attribute.attribute.name}>{attribute.value}</Descriptions.Item>
         ))}
       </Descriptions>
+      <h3 className='font-semibold text-base py-5	' >Thông tin sản phẩm</h3>
+      <p className='text-justify'>{product.description}</p> 
+      
       <Modal visible={visible} onCancel={handleCancel} footer={null} centered>
       <div className="modal-content" style={{ position: 'relative', width: '100%', height: '100%' }}>
         {product.video && selectedImageIndex === -1 ? (
@@ -292,5 +297,4 @@ const ProductDetails = () => {
     </div>
   );
 };
-
 export default ProductDetails;

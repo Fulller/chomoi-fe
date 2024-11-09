@@ -13,7 +13,7 @@ export default function Home() {
   const size = query.get("size") || 20;
   const [productsPage, setProductsPage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  
   useEffect(() => {
     // Cập nhật URL nếu thiếu page hoặc size
     if (!query.get("page") || !query.get("size")) {
@@ -35,7 +35,6 @@ export default function Home() {
     setProductsPage(result.data);
     setIsLoading(false);
   }
-
   const handlePageChange = (page) => {
     query.set("page", page);
     query.set("size", size);
@@ -97,6 +96,7 @@ export default function Home() {
                       </Card>
                     </Link>
                   </Col>
+                  
                 ))
               )}
             </Row>
@@ -105,7 +105,7 @@ export default function Home() {
               {isLoading ? (
                 <Skeleton.Button active size="large" style={{ width: 200 }} />
               ) : (
-                <Pagination onChange={handlePageChange} current={page} total={productsPage.totalElements} />
+                <Pagination onChange={handlePageChange} current={page} total={productsPage.totalElements} pageSize={size}/>
               )}
             </Row>
           </Col>

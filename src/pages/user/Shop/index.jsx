@@ -131,7 +131,7 @@ function ShopPage() {
           
         </Row>
         <Row justify="center" style={{ marginTop: "20px" }}>
-                <Pagination onChange={handlePageChange} current={page} total={products.totalElements} />
+                <Pagination onChange={handlePageChange} current={page} total={products.totalElements} pageSize={size}/>
               
             </Row>
       </div>

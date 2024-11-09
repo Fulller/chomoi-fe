@@ -131,6 +131,5 @@ export default [
     Layout: MainLayout,
     type: USER_ROUTE_TYPES.PUBLIC,
     title: "Cửa hàng",
-  }
-  
+  },
 ];

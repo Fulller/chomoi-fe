@@ -1,30 +1,62 @@
 import React, { useState, useEffect } from "react";
-import { Rate, Card, Row, Col, Button, Badge } from "antd";
+import { Rate, Card, Row, Col, Button, Badge, Pagination, Skeleton } from "antd";
 import { UserOutlined, AntDesignOutlined } from '@ant-design/icons';
 import ShopService from "@services/shop.service";
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import ProductService from "@services/product.service";
 
 function ShopPage() {
   const [shop, setShop] = useState(null);
   const [products, setProducts] = useState([]);
   const { id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const query = new URLSearchParams(location.search);
+  const page = query.get("page") || 1;
+  const size = query.get("size") || 12;
 
   useEffect(() => {
-    fetchShopInfo(id);
-  }, [id]);
+    if (!query.get("page") || !query.get("size")) {
+      query.set("page", page);
+      query.set("size", size);
+      navigate({ search: query.toString() }, { replace: true });
+    } else {
+      fetchShopInfo(id);
+    }
+  }, [id, page, size]);
+
 
   const fetchShopInfo = async (id) => {
-    const [result, error] = await ShopService.getShopById(id);
-    //const [products, errors] = await ProductService.get
-    if(error) {
-      console.log("Error fetching shop info:", error);
-      //return;
-    }
-    else{
+    try {
+      console.log("Fetching shop info for ID:", id);
+      const [result, error] = await ShopService.getShopById(id);
+      if (error) {
+        console.error("Error fetching shop:", error);
+        return;
+      }
+      console.log("Shop result:", result);
+  
+      const [productsResult, productsError] = await ProductService.getAllByShopId({ shopId: id, page: page - 1, size });
+      if (productsError) {
+        console.error("Error fetching products:", productsError);
+        return;
+      }
+      console.log("Products result:", productsResult);
+  
       setShop(result.data);
+      setProducts(productsResult.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  }
+  };
+  
+  
+  const handlePageChange = (page) => {
+    query.set("page", page);
+    query.set("size", size);
+    navigate({ search: query.toString() });
+  };
+
   if (!shop) {
     // Hiển thị xương (skeleton) hoặc loading khi shop chưa được tải
     return (
@@ -41,6 +73,7 @@ function ShopPage() {
           </div>
         </div>
       </div>
+      // <p> Đang load...</p>
     );
   }
   
@@ -56,9 +89,9 @@ function ShopPage() {
         />
         <div className="absolute top-3/4 left-8 transform -translate-y-1/2 flex items-center space-x-4 rounded-lg p-1.5 border-2 border-aliceblue bg-black bg-opacity-60 box-border shadow-2xl">
             <img
-                src={shop.avatar || <AntDesignOutlined />}
+                src={shop.avatar || "https://www.91-cdn.com/hub/wp-content/uploads/2019/02/chrome-incognito-featured.jpg"}
                 alt="Avatar"
-                className="w-20 h-20 rounded-full border-4 border-white"
+                className="w-20 h-20 rounded-full border-4 border-white object-contain"
             />
             <div className="text-white">
                 <h1 className="text-2xl font-bold">{shop.name}</h1>
@@ -76,19 +109,33 @@ function ShopPage() {
       <div className="mt-10">
         <h2 className="text-2xl font-semibold text-gray-800 mb-6">Sản phẩm nổi bật</h2>
         <Row gutter={[16, 24]}>
-          {}
-          <Col span={6}>
-            <Card
-              hoverable
-              cover={<img alt="Product 1" src="https://down-vn.img.susercontent.com/file/cn-11134207-7ras8-m1ibisfp90s4ea.webp" />}
-            >
-              <Card.Meta title="Sản phẩm 1" description="₫100.000" />
-            </Card>
+          {products.content.map((product, index) =>(
+            <Col span={6}>
+               <Link to={`/product/${product.slug}`}>
+                <Card
+                  hoverable
+                  cover={<img alt="Product 1" src={product.thumbnail} />}
+                >
+                  <div className='flex-grow flex flex-col justify-between' style={{paddingTop: '-8px'}}>
+                    <h3 className='product-name p-px'>{product.name}</h3>
+                    <p className='text-red-400 font-semibold'>{product.minPrice} - {product.maxPrice} VND</p>
+                      <div className="flex justify-between">
+                        <Rate disabled defaultValue={product.rating || 4.5} style={{ fontSize: "14px" }} allowHalf className="leading-5"/>
+                        <p className="text-gray-400">{product.sold} Đã bán</p>
+                      </div>
+                  </div>
+                </Card>
+               </Link>
           </Col>
+          ))}
+          
         </Row>
+        <Row justify="center" style={{ marginTop: "20px" }}>
+                <Pagination onChange={handlePageChange} current={page} total={products.totalElements} pageSize={size}/>
+              
+            </Row>
       </div>
     </div>
   );
 }
-
 export default ShopPage;

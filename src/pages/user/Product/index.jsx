@@ -34,7 +34,26 @@ const ProductDetails = () => {
 
   useEffect(() => {
     fetchProduct(id);
-  }, [id]);
+    if (product) {
+      // Thiết lập các biến thể mặc định
+      const initialVariations = {};
+      product.variations.forEach((variation) => {
+        initialVariations[variation.name] = variation.options[0].id;
+      });
+      setSelectedVariations(initialVariations);
+  
+      // Tìm SKU tương ứng với các biến thể mặc định
+      const matchingSku = product.skus.find((sku) =>
+        Object.values(initialVariations).every((variation) => sku.variation.includes(variation))
+      );
+  
+      if (matchingSku) {
+        setSelectedSKUId(matchingSku.id);
+        setMaxQuantity(matchingSku.stock);
+        setPrice(matchingSku.price);
+      }
+    }
+  }, [product, id]);
 
   async function fetchProduct(id) {
     const [result, error] = await ProductService.getProductById(id);
@@ -48,6 +67,9 @@ const ProductDetails = () => {
       }
     }
   }
+
+  
+  
 
   const handleVariationChange = (variationName, optionId) => {
     const updatedVariations = { ...selectedVariations, [variationName]: optionId };

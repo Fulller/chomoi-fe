@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import useMessageByApiCode from "@hooks/useMessageByApiCode";
 import { Row, Col, Rate, Carousel, Button, Descriptions, Radio, InputNumber, Modal, Avatar, Badge } from 'antd';
-import { useParams } from 'react-router-dom';
+import { useHref, useParams, Link } from 'react-router-dom';
 import { LeftOutlined, RightOutlined, AntDesignOutlined } from '@ant-design/icons';
 import ProductService from '@services/product.service';
 import CartService from '@services/cart.service';
@@ -10,6 +10,7 @@ import './Product.scss';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import commonSlice from '@redux/slices/common.slice';
+import {setRedirect} from '@redux/slices/auth.slice';
 
 const ProductDetails = () => {
   const [visible, setVisible] = useState(false);
@@ -26,7 +27,7 @@ const ProductDetails = () => {
   const isLoging = useSelector((state) => state.auth.isLoging);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const href = useHref();
   const handleChange = (value) => {
     setQuantity(value);
   };
@@ -117,6 +118,8 @@ const ProductDetails = () => {
       }          
 
     } else {
+      dispatch(setRedirect(href));
+      console.log(href);
       navigate('/login');
     }
   };
@@ -175,7 +178,7 @@ const ProductDetails = () => {
           <Rate disabled defaultValue={product.rating} style={{ fontSize: '20px' }} className="my-2" />
           <p>{product.sold} Đã bán</p>
           <p className="text-2xl font-semibold text-red-500">{price ? price.toLocaleString() : 0} VND</p>
-          <p className='mt-1'>{product.description}</p>
+          
           {!product.isSimple && (
             <div className='flex flex-col'>
               {product.variations.map((variation) => (
@@ -211,9 +214,11 @@ const ProductDetails = () => {
           </Button>
         </Col>
       </Row>
-
+      
       <div className="shop-info flex items-center my-4 p-4 border rounded-lg">
-        <Avatar size={64} src={product.shop?.avatar || <AntDesignOutlined />} className="mr-4" />
+      <Link to={`/shop/${product.shop.id}`}>
+      <Avatar size={64} src={product.shop?.avatar || <AntDesignOutlined />} className="mr-4" style={{ border: '1px solid pink' }} />
+      </Link>
         <div className="flex flex-col">
           <h3 className="text-lg font-bold">{product.shop?.name || "Shop"}</h3>
           <Badge
@@ -227,67 +232,69 @@ const ProductDetails = () => {
           <Descriptions.Item key={index} label={attribute.attribute.name}>{attribute.value}</Descriptions.Item>
         ))}
       </Descriptions>
+      <h3 className='font-semibold text-base py-5	' >Thông tin sản phẩm</h3>
+      <p className='text-justify'>{product.description}</p> 
+      
       <Modal visible={visible} onCancel={handleCancel} footer={null} centered>
-  <div className="modal-content" style={{ position: 'relative', width: '100%', height: '100%' }}>
-    {product.video && selectedImageIndex === -1 ? (
-      <video
-        className="modal-video"
-        controls
-        style={{
-          objectFit: 'contain',  // Đảm bảo video không bị phóng to quá mức
+      <div className="modal-content" style={{ position: 'relative', width: '100%', height: '100%' }}>
+        {product.video && selectedImageIndex === -1 ? (
+          <video
+            className="modal-video"
+            controls
+            style={{
+              objectFit: 'contain',  // Đảm bảo video không bị phóng to quá mức
+              width: '100%',
+              height: 'auto',
+            }}
+          >
+            <source src={product.video} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img
+            src={product.images[selectedImageIndex]?.path}
+            alt={product.name}
+            className="modal-image"
+            style={{
+              objectFit: 'contain',  // Đảm bảo hình ảnh không bị phóng to quá mức
+              width: '100%',
+              height: 'auto',
+            }}
+          />
+        )}
+        <div className="modal-actions" style={{
+          position: 'absolute',
+          top: '50%',
           width: '100%',
-          height: 'auto',
-        }}
-      >
-        <source src={product.video} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    ) : (
-      <img
-        src={product.images[selectedImageIndex]?.path}
-        alt={product.name}
-        className="modal-image"
-        style={{
-          objectFit: 'contain',  // Đảm bảo hình ảnh không bị phóng to quá mức
-          width: '100%',
-          height: 'auto',
-        }}
-      />
-    )}
-    <div className="modal-actions" style={{
-      position: 'absolute',
-      top: '50%',
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'space-between',
-      transform: 'translateY(-50%)',
-    }}>
-      <Button
-        icon={<LeftOutlined />}
-        onClick={handlePrev}
-        style={{
-          background: 'rgba(0, 0, 0, 0.5)',
-          color: 'white',
-          border: 'none',
-          borderRadius: '50%',
-        }}
-      />
-      <Button
-        icon={<RightOutlined />}
-        onClick={handleNext}
-        style={{
-          background: 'rgba(0, 0, 0, 0.5)',
-          color: 'white',
-          border: 'none',
-          borderRadius: '50%',
-        }}
-      />
-    </div>
-  </div>
-</Modal>
+          display: 'flex',
+          justifyContent: 'space-between',
+          transform: 'translateY(-50%)',
+        }}>
+          <Button
+            icon={<LeftOutlined />}
+            onClick={handlePrev}
+            style={{
+              background: 'rgba(0, 0, 0, 0.5)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+            }}
+          />
+          <Button
+            icon={<RightOutlined />}
+            onClick={handleNext}
+            style={{
+              background: 'rgba(0, 0, 0, 0.5)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+            }}
+          />
+        </div>
+      </div>
+    </Modal>
 
     </div>
   );
 };
-
 export default ProductDetails;

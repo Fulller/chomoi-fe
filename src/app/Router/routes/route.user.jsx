@@ -125,11 +125,10 @@ export default [
     title: "Sản phẩm",
   },
   {
-    path: "/shop",
+    path: "/shop/:id",
     Page: Shop,
     Layout: MainLayout,
     type: USER_ROUTE_TYPES.PUBLIC,
     title: "Cửa hàng",
-  }
-  
+  },
 ];

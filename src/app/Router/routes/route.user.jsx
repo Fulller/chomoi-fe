@@ -79,6 +79,7 @@ export default [
     path: "/cart",
     Page: Cart,
     Layout: AccountLayout,
+    Layout: AccountLayout,
     type: USER_ROUTE_TYPES.PRIVATE,
     title: "Giỏ hàng",
   },

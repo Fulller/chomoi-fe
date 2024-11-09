@@ -14,5 +14,8 @@ const ProductService = {
     getByIdOrSlug(productId) {
       return service(axios.get(`/products/${productId}`));
     },
+    getAllByShopId({shopId, page, size}) {
+      return service(axios.get(`/products/${shopId}/shop?page=${page}&size=${size}`));
+    }
 }
 export default ProductService;

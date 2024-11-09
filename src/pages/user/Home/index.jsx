@@ -10,7 +10,7 @@ export default function Home() {
   const navigate = useNavigate();
   const query = new URLSearchParams(location.search);
   const page = query.get("page") || 1;
-  const size = query.get("size") || 8;
+  const size = query.get("size") || 20;
   const [productsPage, setProductsPage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,7 +59,7 @@ export default function Home() {
             <Row gutter={[16, 16]}>
               {isLoading ? (
                 // Hiển thị bộ xương cho sản phẩm khi đang tải
-                Array.from({ length: 8 }).map((_, index) => (
+                Array.from({ length: 20 }).map((_, index) => (
                   <Col key={index} span={6} xs={24} sm={12} md={8} lg={6}>
                     <Card className="w-auto h-80 mx-auto rounded-lg flex flex-col" bodyStyle={{ padding: "0" }}>
                       <Skeleton.Image className="rounded-t-lg w-full h-48 object-cover" />

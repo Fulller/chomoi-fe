@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, Button, InputNumber, Avatar, Table, Image } from "antd";
+import { Dropdown, Button, InputNumber, Avatar, Table, Image, Spin } from "antd";
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import CartService from "@services/cart.service";
 import "./Cart.scss";
@@ -13,6 +13,8 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState({});
   const [isSameShop, setIsSameShop] = useState(false);
+  const [selectedCartItems, setSelectedCartItems] = useState([]);
+  const [isLoading, setIsloading] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,14 +35,6 @@ const Cart = () => {
   useEffect(() => {
     checkSameShop();
   }, [selectedItems]);
-
-  // Hàm để xử lý sự thay đổi khi chọn hoặc bỏ chọn các sản phẩm
-  const handleRowSelectionChange = (shop, selectedRowKeys) => {
-    setSelectedItems((prevSelected) => ({
-      ...prevSelected,
-      [shop]: selectedRowKeys,
-    }));
-  };
 
   const fetchCartItems = async () => {
     setIsloading(true);
@@ -136,57 +130,6 @@ const Cart = () => {
       ...prevSelected,
       [shop]: selectedRowKeys,
     }));
-
-    // setSelectedCartItems((prevSelectedCartItems) => {
-
-    //   if (selectedRows.length === 0) {
-    //     // Nếu không có item nào được chọn từ shop này, xóa nhóm `shopId` khỏi `selectedCartItems`
-    //     return prevSelectedCartItems.filter((group) => group.shopId !== shopIdItem);
-    //   }
-
-    //   const newSelectedItems = selectedRows.map((item) => item);
-
-    //   // Nhóm các items mới theo `shopId`
-    //   const groupedItems = newSelectedItems.reduce((acc, item) => {
-    //     const shopId = item.shopId;
-    //     const shopName = shop;
-    //     if (!acc[shopId]) {
-    //       acc[shopId] = { shopId, shopName, items: [] };
-    //     }
-    //     acc[shopId].items.push(item);
-    //     return acc;
-    //   }, {});
-
-    //   // Cập nhật `selectedCartItems` với các items mới và xóa nhóm không còn item nào
-    //   const updatedCartItems = prevSelectedCartItems
-    //     .map((group) => {
-    //       const newGroup = groupedItems[group.shopId];
-
-    //       if (newGroup) {
-    //         // Cập nhật nhóm hiện có với các items mới
-    //         const updatedItems = group.items
-    //           .filter((existingItem) => newGroup.items.some((newItem) => newItem.id === existingItem.id))
-    //           .concat(newGroup.items.filter(
-    //             (newItem) => !group.items.some((existingItem) => existingItem.id === newItem.id)
-    //           ));
-
-    //         return { shopId: group.shopId, items: updatedItems };
-    //       }
-    //       // Giữ nhóm hiện có nếu không có thay đổi
-    //       return group;
-    //     })
-    //     .filter(group => group.items.length > 0); // Xóa các nhóm không có item nào
-
-    //   // Thêm các nhóm mới từ `groupedItems` mà không có trong `prevSelectedCartItems`
-    //   Object.values(groupedItems).forEach((newGroup) => {
-    //     if (!updatedCartItems.some((group) => group.shopId === newGroup.shopId)) {
-    //       updatedCartItems.push(newGroup);
-    //     }
-    //   });
-
-    //   // Xóa lại các nhóm trống sau khi cập nhật xong
-    //   return updatedCartItems.filter(group => group.items.length > 0);
-    // });
     setSelectedCartItems(() => {
       if (selectedRows.length === 0) {
         // Nếu không có item nào được chọn từ shop này, xóa `selectedCartItems`
@@ -328,64 +271,65 @@ const Cart = () => {
   ];
 
   return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">Giỏ hàng</h2>
-      {Object.entries(groupedItems).map(([shop, items]) => (
-        <div key={shop} className="mb-8">
-          <Link to={`/shop/${items[0].shopId}`}>
-            <div className="flex items-center mb-4">
-              <Avatar size={40} src={items[0].shopImage} className="mr-4" />
-              <h3 className="text-xl font-semibold">{shop}</h3>
-            </div>
-          </Link>
-          <Table
-            dataSource={items}
-            columns={columns}
-            pagination={false}
-            rowKey="id"
-            bordered
-            className="shadow-lg"
-            rowSelection={{
-              selectedRowKeys: selectedItems[shop] || [],
-              onChange: (selectedRowKeys) =>
-                handleRowSelectionChange(shop, selectedRowKeys),
-            }}
-          />
-        </div>
-      ))}
-
-      {/* Sticky Footer */}
-      <div
-        className={`sticky bottom-0 shadow-lg p-4 flex justify-between items-center ${
-          totalSelectedCount === 0 ? "bg-white" : "bg-red-200 rounded"
-        }`}
-      >
-        <div className="flex items-center">
-          <Tooltip title="Xóa tất cả đã chọn!" overlayStyle={{ zIndex: 10000 }}>
-            <Button
-              type="text"
-              icon={<DeleteOutlined />}
-              onClick={handleMultiDelete}
-              className="mr-2 text-red-500"
-              disabled={totalSelectedCount === 0}
+    <Spin spinning={isLoading}>
+      <div className="container mx-auto p-6">
+        <h2 className="text-2xl font-bold mb-6">Giỏ hàng</h2>
+        {Object.entries(groupedItems).map(([shop, items]) => (
+          <div key={shop} className="mb-8">
+            <Link to={`/shop/${items[0].shopId}`}>
+              <div className="flex items-center mb-4">
+                <Avatar size={40} src={items[0].shopImage} className="mr-4" />
+                <h3 className="text-xl font-semibold">{shop}</h3>
+              </div>
+            </Link>
+            <Table
+              dataSource={items}
+              columns={columns}
+              pagination={false}
+              rowKey="id"
+              bordered
+              className="shadow-lg"
+              rowSelection={{
+                selectedRowKeys: selectedItems[shop] || [],
+                onChange: (selectedRowKeys, selectedRows) =>
+                  handleRowSelectionChange(selectedRowKeys, selectedRows, items[0].shopId, shop),
+              }}
             />
-          </Tooltip>
-          <span className="font-semibold">({totalSelectedCount}) Đã chọn</span>
-        </div>
-        <div className="flex items-center">
-          <span className="font-semibold mr-4">
-            Tổng tiền: {totalPrice.toLocaleString()} VND
-          </span>
-          <Button
-            type="primary"
-            size="large"
-            disabled={totalSelectedCount === 0 || !isSameShop}
-            onClick={() => {
-              console.log(selectedItems);
-            }}
-          >
-            Mua ngay
-          </Button>
+          </div>
+        ))}
+
+        {/* Sticky Footer */}
+        <div
+          className={`sticky bottom-0 shadow-lg p-4 flex justify-between items-center ${totalSelectedCount === 0 ? "bg-white" : "bg-red-200 rounded"
+            }`}
+        >
+          <div className="flex items-center">
+            <Tooltip title="Xóa tất cả đã chọn!" overlayStyle={{ zIndex: 10000 }}>
+              <Button
+                type="text"
+                icon={<DeleteOutlined />}
+                onClick={handleMultiDelete}
+                className="mr-2 text-red-500"
+                disabled={totalSelectedCount === 0}
+              />
+            </Tooltip>
+            <span className="font-semibold">({totalSelectedCount}) Đã chọn</span>
+          </div>
+          <div className="flex items-center">
+            <span className="font-semibold mr-4">
+              Tổng tiền: {totalPrice.toLocaleString()} VND
+            </span>
+            <Button
+              type="primary"
+              size="large"
+              disabled={totalSelectedCount === 0 || !isSameShop}
+              onClick={() => {
+                handleRedirectCheckout()
+              }}
+            >
+              Mua ngay
+            </Button>
+          </div>
         </div>
       </div>
     </Spin>

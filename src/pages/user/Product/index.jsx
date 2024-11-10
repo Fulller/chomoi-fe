@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import useMessageByApiCode from "@hooks/useMessageByApiCode";
 import { Row, Col, Rate, Carousel, Button, Descriptions, Radio, InputNumber, Modal, Avatar, Badge, Spin } from 'antd';
-import { useParams } from 'react-router-dom';
+import { useHref, useParams } from 'react-router-dom';
 import { LeftOutlined, RightOutlined, AntDesignOutlined } from '@ant-design/icons';
 import ProductService from '@services/product.service';
 import CartService from '@services/cart.service';
@@ -10,7 +10,7 @@ import './Product.scss';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import commonSlice from '@redux/slices/common.slice';
-import {setRedirect} from '@redux/slices/auth.slice';
+import { setRedirect } from '@redux/slices/auth.slice';
 
 const ProductDetails = () => {
   const [visible, setVisible] = useState(false);
@@ -36,6 +36,9 @@ const ProductDetails = () => {
 
   useEffect(() => {
     fetchProduct(id);
+  }, [id]);
+
+  useEffect(() => {
     if (product) {
       // Thiết lập các biến thể mặc định
       const initialVariations = {};
@@ -43,22 +46,21 @@ const ProductDetails = () => {
         initialVariations[variation.name] = variation.options[0].id;
       });
       setSelectedVariations(initialVariations);
-  
+
       // Tìm SKU tương ứng với các biến thể mặc định
       const matchingSku = product.skus.find((sku) =>
         Object.values(initialVariations).every((variation) => sku.variation.includes(variation))
       );
-  
+
       if (matchingSku) {
         setSelectedSKUId(matchingSku.id);
         setMaxQuantity(matchingSku.stock);
         setPrice(matchingSku.price);
       }
     }
-  }, [product, id]);
+  },[product]);
 
   async function fetchProduct(id) {
-    setIsloading(true);
     const [result, error] = await ProductService.getProductById(id);
     if (error) {
       console.error(error);
@@ -69,11 +71,7 @@ const ProductDetails = () => {
         setSelectedSKUId(result.data.skus[0]?.id); // Gán SKU ID cho sản phẩm đơn giản
       }
     }
-    setIsloading(false);
   }
-
-  
-  
 
   const handleVariationChange = (variationName, optionId) => {
     const updatedVariations = { ...selectedVariations, [variationName]: optionId };
@@ -168,7 +166,7 @@ const ProductDetails = () => {
     setSelectedImageIndex((prevIndex) => (prevIndex < product.images.length - 1 ? prevIndex + 1 : 0));
   };
   if (!product)
-    return (<Spin spinning={isLoading} className='mx-auto mt-60'><div className="container mx-auto p-4"></div></Spin>);
+    return (<Spin spinning={true} className='mx-auto mt-60'><div className="container mx-auto p-4"></div></Spin>);
   return (
     <Spin spinning={isLoading}>
       <div className="container mx-auto p-4">

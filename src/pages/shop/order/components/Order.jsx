@@ -34,7 +34,7 @@ const Order = ({ order }) => {
     address;
   const [statusCurrent, setStatusCurrent] = useState(status);
   const getMessage = useMessageByApiCode({ apiCode });
-  const [isLoading, setIsloading] = useState(true);
+  const [isLoading, setIsloading] = useState(false);
   const { confirm } = Modal;
 
   const handleChangeOrderStatus = async (orderId, statusUpdate) => {

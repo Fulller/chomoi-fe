@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "@services/auth.service";
 import CartService from "@services/cart.service";
+import OrderService from "@services/order.service";
 import {
   setAccessToken,
   setTokens,
@@ -38,19 +39,34 @@ const useInitialApp = () => {
     }
     dispatch(setUser(result.data));
   };
-  
+
   const fetchTotalCartItem = async () => {
     const [result, error] = await CartService.getAllCartItems();
     if (error) {
       return;
     }
-    dispatch(commonSlice.actions.setTotalCartItem(result.data.cartItems.length));
-  }
+    dispatch(
+      commonSlice.actions.setTotalCartItem(result.data.cartItems.length)
+    );
+  };
+
+  const fetchTotalOrder = async () => {
+    const [result, error] = await OrderService.getAll();
+    if (error) {
+      return;
+    }
+    dispatch(
+      commonSlice.actions.setTotalOrder(
+        result.filter((o) => !["CANCELLED", "RECEIVED"].includes(o.status))
+          .length
+      )
+    );
+  };
 
   const fetchData = async () => {
     await refreshToken();
     if (!isLoging) return;
-    await Promise.all([fetchUser(),fetchTotalCartItem()]);
+    await Promise.all([fetchUser(), fetchTotalCartItem(), fetchTotalOrder()]);
   };
 
   useEffect(() => {

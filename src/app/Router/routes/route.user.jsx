@@ -17,6 +17,7 @@ import Account from "@pages/user/Account";
 import ProductDetail from "@pages/user/Product";
 import Shop from "@pages/user/Shop";
 import { USER_ROUTE_TYPES } from "../routeTypes/routeTypes";
+import Checkout from "@pages/user/Orders/Checkout";
 
 export default [
   {
@@ -85,7 +86,7 @@ export default [
   {
     path: "/orders",
     Page: Orders,
-    Layout: MainLayout,
+    Layout: AccountLayout,
     type: USER_ROUTE_TYPES.PRIVATE,
     title: "Đơn hàng",
   },
@@ -109,6 +110,13 @@ export default [
     Layout: AccountLayout,
     type: USER_ROUTE_TYPES.PRIVATE,
     title: "Đơn mua",
+  },
+  {
+    path: "/checkout",
+    Page: Checkout,
+    Layout: MainLayout,
+    type: USER_ROUTE_TYPES.PRIVATE,
+    title: "Thanh toán",
   },
   {
     path: "*",

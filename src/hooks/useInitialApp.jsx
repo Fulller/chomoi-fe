@@ -24,6 +24,7 @@ const useInitialApp = () => {
     if (error) {
       dispatch(setIsLogin(false));
       dispatch(setTokens({ accessToken: "", refreshToken: "" }));
+      dispatch(setUser(null));
       return;
     }
     const { accessToken } = result.data;
@@ -32,12 +33,13 @@ const useInitialApp = () => {
   };
 
   const fetchUser = async () => {
-    const [result, error] = await AuthService.getUserInfo();
-    if (error) {
+    const [getUserInfoResult, getUserInfoError] =
+      await AuthService.getUserInfo();
+    if (getUserInfoError) {
       dispatch(setUser(null));
       return;
     }
-    dispatch(setUser(result.data));
+    dispatch(setUser(getUserInfoResult.data));
   };
 
   const fetchTotalCartItem = async () => {

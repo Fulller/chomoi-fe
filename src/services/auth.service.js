@@ -32,6 +32,14 @@ const AuthService = {
       axios.post(getAuthUrl("/forgot-password/verify"), { code, newPassword })
     );
   },
+  upgradeToShop({ shopName }) {
+    return service(
+      axios.post(getAuthUrl("/upgrade-to-shop"), { name: shopName })
+    );
+  },
+  newTokens() {
+    return service(axios.get(getAuthUrl("/new-tokens")));
+  },
 };
 
 export default AuthService;

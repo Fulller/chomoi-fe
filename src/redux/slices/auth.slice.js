@@ -32,6 +32,9 @@ const authSlice = createSlice({
     setRedirect: (state, { payload }) => {
       state.redirect = payload;
     },
+    setRoles: (state, { payload }) => {
+      state.user.roles = payload;
+    },
   },
 });
 
@@ -43,5 +46,6 @@ export const {
   clearUser,
   setIsLogin,
   setRedirect,
+  setRoles,
 } = authSlice.actions;
 export default authSlice.reducer;

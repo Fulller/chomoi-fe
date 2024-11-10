@@ -43,9 +43,14 @@ const items = [
                 path: "/orders/delivering"
             },
             {
-                label: 'Hoàn thành',
+                label: 'Đã vận chuyển',
                 key: 'delivered',
                 path: "/orders/delivered"
+            },
+            {
+                label: 'Đã nhận hàng',
+                key: 'received',
+                path: "/orders/received"
             },
             {
                 label: 'Đã hủy',

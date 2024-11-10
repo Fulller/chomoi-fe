@@ -1,22 +1,26 @@
 import { Fragment, useEffect, useState } from "react";
 import Order from "./components/Order";
 import OrderService from "@services/order.service";
+import { Spin } from "antd";
 
 const DeliveringOrder = () => {
     const [orders, setOrderes] = useState([]);
+    const [isLoading, setIsloading] = useState(false);
+
 
     useEffect(() => {
         fetchOrderByOrderStatus();
     }, [])
 
     async function fetchOrderByOrderStatus() {
+        setIsloading(true);
         const [data] = await OrderService.getByOrderStatus("DELIVERING");
         setOrderes(data);
+        setIsloading(false);
     }
-    console.log(orders);
 
     return (
-        <Fragment>
+        <Spin spinning={isLoading}>
             <div className="flex ">
                 <h1 className="mx-auto font-bold text-lg text-primary">Đang vận chuyển</h1>
             </div>
@@ -30,7 +34,7 @@ const DeliveringOrder = () => {
                     </div>
                 </div>
             }
-        </Fragment>
+        </Spin>
     );
 }
 export default DeliveringOrder;

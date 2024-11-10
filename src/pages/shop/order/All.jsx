@@ -1,21 +1,26 @@
 import { Fragment, useState, useEffect } from "react";
 import Order from "./components/Order";
 import OrderService from "@services/order.service";
+import { Spin } from "antd";
 
 const All = () => {
     const [orders, setOrderes] = useState([]);
+    const [isLoading, setIsloading] = useState(false);
+
 
     useEffect(() => {
         fetchOrderes();
     }, [])
 
     async function fetchOrderes() {
+        setIsloading(true);
         const [data] = await OrderService.getListOrderOfShop();
         setOrderes(data);
+        setIsloading(false);
     }
 
     return (
-        <Fragment>
+        <Spin spinning={isLoading}>
             <div className="flex ">
                 <h1 className="mx-auto font-bold text-lg text-primary">Tất cả đơn hàng</h1>
             </div>
@@ -29,7 +34,7 @@ const All = () => {
                     </div>
                 </div>
             }
-        </Fragment>
+        </Spin>
     );
 }
 

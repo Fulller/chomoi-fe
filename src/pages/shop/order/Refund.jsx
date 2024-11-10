@@ -1,23 +1,27 @@
 import { Fragment, useState, useEffect } from "react";
 import Order from "./components/Order";
 import OrderService from "@services/order.service";
+import { Spin } from "antd";
 
 const Refund = () => {
   const [orders, setOrderes] = useState([]);
+  const [isLoading, setIsloading] = useState(false);
 
   useEffect(() => {
     fetchOrderes();
   }, [])
 
   async function fetchOrderes() {
+    setIsloading(true);
     const [data] = await OrderService.getListOrderByStatusOfShop("REFUNDED");
     setOrderes(data);
+    setIsloading(false)
   }
 
   return (
-    <Fragment>
+    <Spin spinning={isLoading}>
       <div className="flex ">
-        <h1 className="mx-auto font-bold text-lg text-primary">Tất cả đơn hàng</h1>
+        <h1 className="mx-auto font-bold text-lg text-primary">Trả hàng</h1>
       </div>
       {orders && orders.length > 0 ?
         orders.map((order) => (
@@ -29,7 +33,7 @@ const Refund = () => {
           </div>
         </div>
       }
-    </Fragment>
+    </Spin>
   );
 }
 

@@ -3,7 +3,7 @@ import Order from "./components/Order";
 import OrderService from "@services/order.service";
 import { Spin } from "antd";
 
-const CancelledOrder = () => {
+const ReceivedOrder = () => {
     const [orders, setOrderes] = useState([]);
     const [isLoading, setIsloading] = useState(false);
 
@@ -14,7 +14,7 @@ const CancelledOrder = () => {
 
     async function fetchOrderByOrderStatus() {
         setIsloading(true);
-        const [data] = await OrderService.getByOrderStatus("CANCELLED");
+        const [data] = await OrderService.getByOrderStatus("RECEIVED");
         setOrderes(data);
         setIsloading(false);
     }
@@ -22,7 +22,7 @@ const CancelledOrder = () => {
     return (
         <Spin spinning={isLoading}>
             <div className="flex ">
-                <h1 className="mx-auto font-bold text-lg text-primary">Đã hủy</h1>
+                <h1 className="mx-auto font-bold text-lg text-primary">Đã nhận hàng</h1>
             </div>
             {orders && orders.length > 0 ?
                 orders.map((order) => (
@@ -37,4 +37,5 @@ const CancelledOrder = () => {
         </Spin>
     );
 }
-export default CancelledOrder;
+
+export default ReceivedOrder;

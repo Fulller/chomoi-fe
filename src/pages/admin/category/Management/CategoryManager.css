@@ -1,0 +1,47 @@
+.category-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.category-container .ant-form-inline {
+  margin-bottom: 20px;
+}
+.category-container .category-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.category-container .category-actions .add-button {
+  background-color: #1890ff;
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 12px;
+}
+.category-container .category-actions .add-button:hover {
+  background-color: #0076e4;
+}
+.category-container .ant-table {
+  background-color: #fafafa;
+  border-radius: 6px;
+}
+.category-container .ant-table .ant-table-thead > tr > th {
+  background-color: #1890ff;
+  color: white;
+}
+.category-container .ant-table .ant-table-tbody > tr:hover {
+  background-color: #fefeff;
+}
+
+.modal-update-category .ant-modal-header {
+  background-color: #1890ff;
+  color: white;
+  padding: 8px;
+}
+.modal-update-category .ant-modal-footer button {
+  background-color: #1890ff;
+  color: white;
+}
+.modal-update-category .ant-modal-footer button:hover {
+  background-color: #0076e4;
+}/*# sourceMappingURL=CategoryManager.css.map */

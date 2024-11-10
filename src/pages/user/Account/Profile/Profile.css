@@ -1,0 +1,67 @@
+.acc-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  box-sizing: border-box;
+}
+.acc-card .acc-info {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 80%;
+}
+.acc-card .acc-info p {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.acc-card .acc-info p .label {
+  font-weight: bold;
+  color: #333;
+  width: 20%;
+}
+.acc-card .acc-info p .value {
+  color: #555;
+  width: 30%;
+  text-align: left;
+}
+
+.acc-avt {
+  width: 200px;
+  height: 200px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  border-radius: 1000%;
+  margin: 10px auto 20px auto;
+  display: block;
+}
+
+.label {
+  color: #333;
+  margin-right: 8px;
+  font-weight: 900;
+}
+
+.upload-avt {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-save {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px;
+  border: 1px solid;
+  border-radius: 6px;
+  background-color: #3B82F6;
+  color: #fff;
+}
+
+.header {
+  font-weight: 700;
+}/*# sourceMappingURL=Profile.css.map */

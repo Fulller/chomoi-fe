@@ -13,7 +13,6 @@ export default function Actions() {
   const cartCount = useSelector(commonSelector.getTotalCartItem);
   const orderCount = useSelector(commonSelector.getTotalOrder);
 
-
   const menu = [
     {
       title: "Giỏ hàng",
@@ -24,7 +23,7 @@ export default function Actions() {
     {
       title: "Đơn hàng",
       icon: FiShoppingBag,
-      path: "/orders",
+      path: "/orders/all",
       count: orderCount,
     },
   ];
@@ -39,7 +38,7 @@ export default function Actions() {
               <ToolTip key={uuidv4()} content={item.title}>
                 <Link
                   to={item.path}
-                  className="menuAction-item relative flex items-center rounded-md whitespace-nowrap space-x-2 rounded-full"
+                  className="menuAction-item relative flex items-center whitespace-nowrap space-x-2 rounded-full"
                 >
                   <Icon size={30} />
                   {item.count > 0 && (

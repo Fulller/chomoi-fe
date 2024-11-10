@@ -14,10 +14,13 @@ import Setting from "@pages/user/Setting";
 import Cart from "@pages/user/Cart";
 import Orders from "@pages/user/Orders";
 import Account from "@pages/user/Account";
+import UpgradeToShop from "@pages/user/UpgradeToShop";
+
 import ProductDetail from "@pages/user/Product";
 import Shop from "@pages/user/Shop";
 import { USER_ROUTE_TYPES } from "../routeTypes/routeTypes";
 import Search from "@pages/user/Search";
+import Checkout from "@pages/user/Orders/Checkout";
 
 export default [
   {
@@ -86,7 +89,7 @@ export default [
   {
     path: "/orders",
     Page: Orders,
-    Layout: MainLayout,
+    Layout: AccountLayout,
     type: USER_ROUTE_TYPES.PRIVATE,
     title: "Đơn hàng",
   },
@@ -112,11 +115,25 @@ export default [
     title: "Đơn mua",
   },
   {
+    path: "/checkout",
+    Page: Checkout,
+    Layout: MainLayout,
+    type: USER_ROUTE_TYPES.PRIVATE,
+    title: "Thanh toán",
+  },
+  {
     path: "*",
     Page: NotFound,
     Layout: MainLayout,
     type: USER_ROUTE_TYPES.PUBLIC,
     title: "Không tìm thấy trang",
+  },
+  {
+    path: "/upgrade-to-shop",
+    Page: UpgradeToShop,
+    Layout: MainLayout,
+    type: USER_ROUTE_TYPES.PRIVATE,
+    title: "Đăng ký cửa hàng",
   },
   {
     path: "/product/:id",

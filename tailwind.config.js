@@ -18,6 +18,12 @@ export default {
         "1200px": "1200px",
         "1300px": "1300px",
       },
+      colors: {
+        primary: '#f06595', // Màu chính tùy chỉnh
+        success: '#3b82f6', // Màu thành công tùy chỉnh
+        warning: '#ffd43b', // Màu cảnh báo tùy chỉnh
+        error: '#ff3300', // Màu lỗi tùy chỉnh
+      },
     },
   },
   plugins: [],

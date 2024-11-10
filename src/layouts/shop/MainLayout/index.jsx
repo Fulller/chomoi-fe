@@ -39,7 +39,7 @@ export default function ShopMainLayout({ children }) {
         collapsed={collapsed}
         onCollapse={toggleCollapse}
       >
-        <Link to="/@admin/">
+        <Link to="/@shop/">
           <div className="logo">
             <img src={logo} alt="logo" />
             {!collapsed && <h1>CỬA HÀNG</h1>}

@@ -3,6 +3,7 @@ import { FaSearch, FaTimes } from "react-icons/fa";
 import TollTip from "@components/TollTip";
 import { useNavigate } from "react-router-dom";
 
+
 export default function SearchBox({ className }) {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);

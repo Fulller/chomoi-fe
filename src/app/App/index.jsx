@@ -10,7 +10,16 @@ import "./global.css";
 function App() {
   useInitialApp();
   return (
-    <ConfigProvider>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#f06595", // Màu chính được thay đổi
+          colorSuccess: "#3b82f6", // Màu thành công
+          colorWarning: "#ffd43b", // Màu cảnh báo
+          colorError: "#ff3300", // Màu lỗi
+        },
+      }}
+    >
       <AntApp>
         <Router></Router>
         <ToastContainer />

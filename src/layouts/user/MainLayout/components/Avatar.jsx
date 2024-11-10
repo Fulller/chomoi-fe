@@ -114,6 +114,7 @@ export default function Avatar() {
           )}
         </div>
       )}
+      
     >
       <span onClick={toggleMenu} className="cursor-pointer avatar">
         {user?.avatar ? (

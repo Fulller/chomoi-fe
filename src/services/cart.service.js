@@ -10,7 +10,6 @@ const CartService = {
     },
     
     async updateCartItemQuantity({skuId, quantity}){
-        console.log(skuId, quantity);
         return await service(axios.put(`/carts`, { skuId, quantity }), true);
     },
 

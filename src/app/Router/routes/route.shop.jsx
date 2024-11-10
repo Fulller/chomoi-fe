@@ -3,6 +3,7 @@ import { SHOP_ROUTE_TYPES } from "../routeTypes/routeTypes";
 import MainLayout from "@layouts/shop/MainLayout";
 
 import Home from "@pages/shop/Home";
+import Update from "@pages/shop/shop/Update";
 import FinanceBalance from "@pages/shop/finance/Balance";
 import FinanceMomo from "@pages/shop/finance/Momo";
 import OrderAll from "@pages/shop/order/All";
@@ -29,7 +30,7 @@ export default [
     Page: OrderAll,
     Layout: MainLayout,
     type: SHOP_ROUTE_TYPES.PRIVATE,
-    title: "Đơn hàng / Tất cả",
+    title: "Đơn hàng / Tấc cả",
   },
   {
     path: "/@shop/order/delivery",
@@ -100,6 +101,13 @@ export default [
     Layout: MainLayout,
     type: SHOP_ROUTE_TYPES.PRIVATE,
     title: "Quản lý shop / Hồ sơ",
+  },
+  {
+    path: "/@shop/shop/profile/edit",
+    Page: Update,
+    Layout: MainLayout,
+    type: SHOP_ROUTE_TYPES.PRIVATE,
+    title: "Chỉnh sửa thông tin shop",
   },
   {
     path: "/@shop/shop/setting",

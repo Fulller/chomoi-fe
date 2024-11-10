@@ -16,6 +16,9 @@ const ProductService = {
     },
     getAllByShopId({shopId, page, size}) {
       return service(axios.get(`/products/${shopId}/shop?page=${page}&size=${size}`));
+    },
+    search({query, page=0, size=2}){
+      return service(axios.get(getApiUrl(`/products/search?page=${page}&size=${size}&query=${query}`)));
     }
 }
 export default ProductService;

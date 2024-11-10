@@ -17,6 +17,7 @@ import Account from "@pages/user/Account";
 import ProductDetail from "@pages/user/Product";
 import Shop from "@pages/user/Shop";
 import { USER_ROUTE_TYPES } from "../routeTypes/routeTypes";
+import Search from "@pages/user/Search";
 
 export default [
   {
@@ -130,5 +131,12 @@ export default [
     Layout: MainLayout,
     type: USER_ROUTE_TYPES.PUBLIC,
     title: "Cửa hàng",
+  },
+  {
+    path: "/search",
+    Page: Search,
+    Layout: MainLayout,
+    type: USER_ROUTE_TYPES.PUBLIC,
+    title: "Tìm kiếm",
   },
 ];

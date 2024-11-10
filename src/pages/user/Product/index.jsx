@@ -10,6 +10,7 @@ import './Product.scss';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import commonSlice from '@redux/slices/common.slice';
+import {setRedirect} from '@redux/slices/auth.slice';
 
 const ProductDetails = () => {
   const [visible, setVisible] = useState(false);
@@ -28,13 +29,33 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsloading] = useState(false);
 
+  const href = useHref();
   const handleChange = (value) => {
     setQuantity(value);
   };
 
   useEffect(() => {
     fetchProduct(id);
-  }, [id]);
+    if (product) {
+      // Thiết lập các biến thể mặc định
+      const initialVariations = {};
+      product.variations.forEach((variation) => {
+        initialVariations[variation.name] = variation.options[0].id;
+      });
+      setSelectedVariations(initialVariations);
+  
+      // Tìm SKU tương ứng với các biến thể mặc định
+      const matchingSku = product.skus.find((sku) =>
+        Object.values(initialVariations).every((variation) => sku.variation.includes(variation))
+      );
+  
+      if (matchingSku) {
+        setSelectedSKUId(matchingSku.id);
+        setMaxQuantity(matchingSku.stock);
+        setPrice(matchingSku.price);
+      }
+    }
+  }, [product, id]);
 
   async function fetchProduct(id) {
     setIsloading(true);
@@ -50,6 +71,9 @@ const ProductDetails = () => {
     }
     setIsloading(false);
   }
+
+  
+  
 
   const handleVariationChange = (variationName, optionId) => {
     const updatedVariations = { ...selectedVariations, [variationName]: optionId };
@@ -121,6 +145,8 @@ const ProductDetails = () => {
       }
 
     } else {
+      dispatch(setRedirect(href));
+      console.log(href);
       navigate('/login');
     }
   };
@@ -295,5 +321,4 @@ const ProductDetails = () => {
     </Spin>
   );
 };
-
 export default ProductDetails;

@@ -3,7 +3,7 @@ import { SHOP_ROUTE_TYPES } from "../routeTypes/routeTypes";
 import MainLayout from "@layouts/shop/MainLayout";
 
 import Home from "@pages/shop/Home";
-import Update from "@pages/shop/Update";
+import Update from "@pages/shop/shop/Update";
 import FinanceBalance from "@pages/shop/finance/Balance";
 import FinanceMomo from "@pages/shop/finance/Momo";
 import OrderAll from "@pages/shop/order/All";
@@ -103,7 +103,7 @@ export default [
     title: "Quản lý shop / Hồ sơ",
   },
   {
-    path: "@/shops/edit",
+    path: "/@shop/shop/profile/edit",
     Page: Update,
     Layout: MainLayout,
     type: SHOP_ROUTE_TYPES.PRIVATE,

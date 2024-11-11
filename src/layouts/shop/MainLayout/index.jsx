@@ -39,12 +39,12 @@ export default function ShopMainLayout({ children }) {
         collapsed={collapsed}
         onCollapse={toggleCollapse}
       >
-        <Link to="/@shop/">
-          <div className="logo">
+        <div className="logo">
+          <Link to="/">
             <img src={logo} alt="logo" />
-            {!collapsed && <h1>CỬA HÀNG</h1>}
-          </div>
-        </Link>
+          </Link>
+          <Link to="/@shop/order/all">{!collapsed && <h1>CỬA HÀNG</h1>}</Link>
+        </div>
 
         <Menu
           className="shop-sider-menu"

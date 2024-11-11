@@ -51,8 +51,13 @@ const ProductDetails = () => {
     setQuantity(value);
   };
 
+  console.log({ product });
+
   useEffect(() => {
     fetchProduct(id);
+  }, [id]);
+
+  useEffect(() => {
     if (product) {
       // Thiết lập các biến thể mặc định
       const initialVariations = {};

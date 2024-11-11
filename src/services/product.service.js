@@ -31,5 +31,17 @@ const ProductService = {
   getByIdOrSlug(productId) {
     return service(axios.get(`/products/${productId}`));
   },
+  getAllByRoleShop() {
+    return service(axios.get(`/products/shop`));
+  },
+  shopChangeStatus(productId, status) {
+    return service(
+      axios.put(`products/shop/${productId}/change-status`, { status })
+    );
+  },
+  updateStock(skuId, quantity) {
+    console.log({ skuId, quantity });
+    return service(axios.put(`products/sku/${skuId}/stock`, { quantity }));
+  },
 };
 export default ProductService;

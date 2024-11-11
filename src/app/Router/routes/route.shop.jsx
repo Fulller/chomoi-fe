@@ -12,6 +12,8 @@ import OrderDelivery from "@pages/shop/order/Delivery";
 import OrderRefund from "@pages/shop/order/Refund";
 import ProductAll from "@pages/shop/product/All";
 import ProductCreate from "@pages/shop/product/Create";
+import ProductEdit from "@pages/shop/product/Edit";
+import ProductStock from "@pages/shop/product/Stock";
 import ShopProfile from "@pages/shop/shop/Profile";
 import ShopSetting from "@pages/shop/shop/Setting";
 import SupportChat from "@pages/shop/support/Chat";
@@ -66,6 +68,20 @@ export default [
     Layout: MainLayout,
     type: SHOP_ROUTE_TYPES.PRIVATE,
     title: "Sản phẩm / Thêm sản phẩm",
+  },
+  {
+    path: "/@shop/product/edit",
+    Page: ProductEdit,
+    Layout: MainLayout,
+    type: SHOP_ROUTE_TYPES.PRIVATE,
+    title: "Sản phẩm / Sửa sản phẩm",
+  },
+  {
+    path: "/@shop/product/edit/:productId",
+    Page: ProductStock,
+    Layout: MainLayout,
+    type: SHOP_ROUTE_TYPES.PRIVATE,
+    title: "Sản phẩm / Quản lý kho hàng",
   },
   {
     path: "/@shop/support/chat",

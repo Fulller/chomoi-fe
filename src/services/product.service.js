@@ -43,5 +43,12 @@ const ProductService = {
     console.log({ skuId, quantity });
     return service(axios.put(`products/sku/${skuId}/stock`, { quantity }));
   },
+  search({ query, page = 0, size = 2 }) {
+    return service(
+      axios.get(
+        getApiUrl(`/products/search?page=${page}&size=${size}&query=${query}`)
+      )
+    );
+  },
 };
 export default ProductService;

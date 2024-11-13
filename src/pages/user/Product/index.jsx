@@ -15,7 +15,7 @@ import {
   Badge,
   Spin,
 } from "antd";
-import { useHref, useParams } from "react-router-dom";
+import { Link, useHref, useParams } from "react-router-dom";
 import {
   LeftOutlined,
   RightOutlined,
@@ -346,7 +346,10 @@ const ProductDetails = () => {
           </Col>
         </Row>
 
-        <div className="shop-info flex items-center my-4 p-4 border rounded-lg">
+        <Link
+          to={`/shop/${product.shop.id}`}
+          className="shop-info flex items-center my-4 p-4 border rounded-lg"
+        >
           <Avatar
             size={64}
             src={product.shop?.avatar || <AntDesignOutlined />}
@@ -363,7 +366,7 @@ const ProductDetails = () => {
               }
             />
           </div>
-        </div>
+        </Link>
         <Descriptions
           title="Thông số kỹ thuật"
           bordered

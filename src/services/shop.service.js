@@ -11,7 +11,7 @@ const ShopService = {
     return service(axios.put("/shops/changeShopStatus", { status }));
   },
   getShopById(id) {
-    return service(axios.get(getApiUrl(`/shops/${id}/details`)));
+    return service(axios.get(`/shops/${id}/details`));
   },
 };
 
